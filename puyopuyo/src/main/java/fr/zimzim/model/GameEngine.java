@@ -62,7 +62,7 @@ public class GameEngine {
 			for(int j=0; j<activeItems.size(); j++) {
 				GameItem other = activeItems.get(j);
 				int line = other.getLine();
-				
+
 				while(line+1 < Settings.MAP_HEIGHT && map.getCase(line+1, other.getColumn()).getState() instanceof CaseEmpty) {
 					line++;
 				}
@@ -114,7 +114,7 @@ public class GameEngine {
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
 			GameItem axe = activeItems.get(0);
-			
+
 			// xy
 			//y
 			//x
@@ -153,14 +153,14 @@ public class GameEngine {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public void rotateRight() {
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
 			GameItem axe = activeItems.get(0);
-			
+
 			// xy
 			//x
 			//y
@@ -202,7 +202,7 @@ public class GameEngine {
 		}
 
 	}
-	
+
 	public boolean checkMap() {
 		//System.out.println("////Check");
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
@@ -226,23 +226,29 @@ public class GameEngine {
 		}
 		return true;
 	}
-	
+
 	private void refreshMap() {
 		for(int i=Settings.MAP_HEIGHT-1; i>0; i--) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				Case c = map.getCase(i, j);
-				int line = c.getLine();
-				while(line+1>Settings.MAP_HEIGHT && map.getCase(line+1, c.getColumn()).getState() instanceof CaseEmpty) {
-					line++;
-					System.out.println(line);
+
+				if(c.getState() instanceof CaseBusy) {
+					int line = c.getLine();
+					while(line+1<Settings.MAP_HEIGHT && map.getCase(line+1, c.getColumn()).getState() instanceof CaseEmpty) {
+						line++;
+						System.out.println(line);
+					}
+					if(line != c.getLine()) {
+						map.getCase(line, c.getColumn()).setState(CaseBusy.getInstance());
+						c.setItem(c.getItem());
+						map.getCase(line, c.getColumn()).getItem().setLine(line);
+						c.setState(CaseEmpty.getInstance());
+						c.setItem(null);
+					}
 				}
-				map.getCase(line-1, c.getColumn()).setState(CaseBusy.getInstance());
-				map.getCase(line-1, c.getColumn()).setItem(c.getItem());
-				c.setState(CaseEmpty.getInstance());
-				c.setItem(null);
 			}
 		}
-		
+
 	}
 
 	private void delete(List<Case> toDelete) {
@@ -259,7 +265,7 @@ public class GameEngine {
 		List<Case> successors = getSuccessors(c, l);
 		//System.out.println("current "+c.getLine()+" "+c.getColumn());
 		//System.out.println("succ before resized "+successors.size());
-		
+
 		if(successors.size() == 0) {
 			l.add(c);
 			return l;
@@ -271,8 +277,8 @@ public class GameEngine {
 		if(successors.size() > 0) {
 			for(int i =0; i<successors.size(); i++) {
 				Case succ = successors.get(i);
-				
-				
+
+
 				if(!l.contains(succ)){
 					System.out.println("add "+c.getLine()+" "+c.getColumn()+" context "+c.getLine()+" "+c.getColumn());
 					l.add(c);
@@ -288,12 +294,12 @@ public class GameEngine {
 		List<Case> result = new ArrayList<Case>();
 		int line = c.getLine();
 		int col = c.getColumn();
-		
+
 		if(line > 0) result.add(map.getCase(line-1, col));
 		if(line < Settings.MAP_HEIGHT-1) result.add(map.getCase(line+1, col));
 		if(col > 0) result.add(map.getCase(line, col-1));
 		if(col < Settings.MAP_WIDTH-1) result.add(map.getCase(line, col+1));
-		
+
 		List<Case> candidates = new ArrayList<Case>();
 		for(int i = 0; i<result.size(); i++) {
 			Case current = result.get(i);
