@@ -201,9 +201,42 @@ public class GameEngine {
 	}
 	
 	public void checkMap() {
-		
+		for(int i=0; i<map.getHeight(); i++) {
+			for(int j=0; j<map.getWidth(); j++) {
+				if(map.getCase(i, j).getState() instanceof CaseBusy) {
+					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
+					if(toDelete.size() >= Settings.COMBO_SIZE) {
+						delete(toDelete.get(0), toDelete);
+						refreshMap();
+					}
+				}
+			}
+		}
 	}
 	
+	private void refreshMap() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void delete(Case c, List<Case> toDelete) {
+		if(toDelete.size() == 0) {
+			c.setState(CaseEmpty.getInstance());
+			c.setItem(null);
+		}
+		else {
+			c.setState(CaseEmpty.getInstance());
+			c.setItem(null);
+			toDelete.remove(c);
+			delete(toDelete.get(0), toDelete);
+		}
+	}
+
+	private List<Case> getCaseToDelete(Case c, List<Case> l) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Dimension getMapDimension() {
 		return new Dimension(Settings.MAP_WIDTH,Settings.MAP_HEIGHT);
 	}

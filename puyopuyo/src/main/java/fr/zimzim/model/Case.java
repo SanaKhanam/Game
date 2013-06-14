@@ -8,9 +8,9 @@ import fr.zimzim.meshe.GameItem;
 public class Case {
 	
 	private GameItem item;
+	private CaseState state;
 	private int posX;
 	private int posY;
-	private CaseState state;
 	
 	public Case(GameItem item, int posX, int posY) {
 		this.item = item;
