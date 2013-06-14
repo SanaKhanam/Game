@@ -5,103 +5,84 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.zimzim.casestate.CaseBusy;
+import fr.zimzim.casestate.CaseEmpty;
+import fr.zimzim.meshe.GameItem;
+import fr.zimzim.meshe.Puyo;
 import fr.zimzim.observer.MyObservable;
-import fr.zimzim.puyostate.PuyoFalling;
-import fr.zimzim.puyostate.PuyoFixed;
-import fr.zimzim.ressource.Case;
-import fr.zimzim.ressource.Map;
-import fr.zimzim.ressource.Puyo;
 import fr.zimzim.util.Settings;
 
 public class GameEngine {
 
 
 	private Map map;
-	private List<Puyo> fallingPuyos;
-	private List<Puyo> nextFallingPuyos;
+	private List<GameItem> activeItems;
+	private List<GameItem> nextFallingPuyos;
 	private Random randomGenerator;
 	private MyObservable observable;
 
 	public GameEngine() {
 		this.map = new Map(Settings.MAP_HEIGHT, Settings.MAP_WIDTH);
-		this.fallingPuyos = new ArrayList<Puyo>();
-		this.nextFallingPuyos = new ArrayList<Puyo>();
+		this.activeItems = new ArrayList<GameItem>();
+		this.nextFallingPuyos = new ArrayList<GameItem>();
 		this.randomGenerator = new Random();
 	}
 
-	public void addFallingPuyos() {
+	public void addActiveItems() {
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			Puyo puyo = new Puyo(1,i+2,randomGenerator.nextInt(4)+1);
-			puyo.setState(PuyoFalling.getInstance());
-			fallingPuyos.add(puyo);
-			map.getCase(1, i+2).setPuyo(puyo);
+			GameItem item = new Puyo(1,i+2,randomGenerator.nextInt(4)+1);
+			activeItems.add(item);
 		}
 	}
 
 	public boolean fall() {
-		
-//		for(int i=0; i<fallingPuyos.size(); i++) {
-//			Puyo puyo = fallingPuyos.get(i);
-//			if(puyo.getLine()+1 < Settings.MAP_HEIGHT) {
-//				if(!this.fallingPuyos.contains(map.getCase(puyo.getLine()+1, puyo.getColumn()).getPuyo())) {
-//				map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-//				map.getCase(puyo.getLine()+1, puyo.getColumn()).setPuyo(puyo);
-//				puyo.setLine(puyo.getLine()+1);
-//				}
-//			}
-//		}
-		
-		for(int i=0; i<fallingPuyos.size(); i++) {
-			Puyo puyo = fallingPuyos.get(i);
-			if(puyo.getLine()+1 == Settings.MAP_HEIGHT ||
-					(map.getCase(puyo.getLine()+1, puyo.getColumn()).getPuyo() != null)) {
-				puyo.setLine(puyo.getLine());
-				puyo.setState(PuyoFixed.getInstance());
-				map.getCase(puyo.getLine()-1, puyo.getColumn()).setPuyo(null);
-				map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(puyo);
-				fallingPuyos.remove(i);
-				for(int j=0; j<fallingPuyos.size(); j++) {
-					Puyo other = fallingPuyos.get(j);
-					int line = other.getLine();
-					map.getCase(line, other.getColumn()).setPuyo(null);
-					line++;
-					while(line < Settings.MAP_HEIGHT && map.getCase(line, other.getColumn()).getPuyo() == null) {
-						line++;
-						map.getCase(line-1, other.getColumn()).setPuyo(null);
-					}
-					other.setLine(line-1);
-					other.setState(PuyoFixed.getInstance());
-					map.getCase(line-1, other.getColumn()).setPuyo(other);
-					map.getCase(line-2, other.getColumn()).setPuyo(null);
-					fallingPuyos.remove(j);
-
-				}
-				return false;
-			}
-			else {
-				map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-				map.getCase(puyo.getLine()+1, puyo.getColumn()).setPuyo(puyo);
-				puyo.setLine(puyo.getLine()+1);
+		boolean wrong = true;
+		GameItem tmp = null;
+		for(int i=0; i<activeItems.size(); i++) {
+			GameItem item = activeItems.get(i);
+			if(item.getLine()+1 == Settings.MAP_HEIGHT || map.getCase(item.getLine()+1, item.getColumn()).getState() instanceof CaseBusy ) {
+				wrong = false;
+				tmp = item;
+				activeItems.remove(item);
 			}
 		}
-		return true;
+		if(!wrong) {
+			map.getCase(tmp.getLine(), tmp.getColumn()).setState(CaseBusy.getInstance());
+			map.getCase(tmp.getLine(), tmp.getColumn()).setItem(tmp);
+			for(int j=0; j<activeItems.size(); j++) {
+				GameItem other = activeItems.get(j);
+				int line = other.getLine();
+				
+				while(line+1 < Settings.MAP_HEIGHT && map.getCase(line+1, other.getColumn()).getState() instanceof CaseEmpty) {
+					line++;
+				}
+				other.setLine(line);
+				map.getCase(other.getLine(), other.getColumn()).setState(CaseBusy.getInstance());
+				map.getCase(other.getLine(), other.getColumn()).setItem(other);
+				activeItems.remove(other);
+			}
+		}
+		else {
+			for(int i=0; i<activeItems.size(); i++) {
+				activeItems.get(i).setLine(activeItems.get(i).getLine()+1);
+			}
+		}
 
+		return wrong;
 	}
 
 	public void moveRight() {
-		Puyo right = fallingPuyos.get(0);
-		for(int i=1; i<fallingPuyos.size(); i++) {
-			Puyo puyo = fallingPuyos.get(i);
-			if(puyo.getColumn() > right.getColumn()) right = puyo;
+		GameItem right = activeItems.get(0);
+		for(int i=1; i<activeItems.size(); i++) {
+			GameItem item = activeItems.get(i);
+			if(item.getColumn() > right.getColumn()) right = item;
 		}
 		if(right.getColumn()+1<Settings.MAP_WIDTH) {
-			Puyo adjacent = map.getCase(right.getLine(), right.getColumn()+1).getPuyo();
-			if(adjacent == null || !(adjacent.getState() instanceof PuyoFixed)) {
-				for(int j=0; j< fallingPuyos.size(); j++) {
-					Puyo puyo = fallingPuyos.get(j);
-					map.getCase(puyo.getLine(), puyo.getColumn()+1).setPuyo(puyo);
-					puyo.setColumn(puyo.getColumn()+1);
-					map.getCase(puyo.getLine(), puyo.getColumn()-1).setPuyo(null);
+			Case adjacent = map.getCase(right.getLine(), right.getColumn()+1);
+			if(adjacent.getState() instanceof CaseEmpty) {
+				for(int j=0; j< activeItems.size(); j++) {
+					GameItem item = activeItems.get(j);
+					item.setColumn(item.getColumn()+1);
 				}
 			}
 		}
@@ -109,57 +90,66 @@ public class GameEngine {
 	}
 
 	public void moveLeft() {
-		Puyo left = fallingPuyos.get(0);
-		for(int i=1; i<fallingPuyos.size(); i++) {
-			Puyo puyo = fallingPuyos.get(i);
-			if(puyo.getColumn() < left.getColumn()) left = puyo;
+		GameItem left = activeItems.get(0);
+		for(int i=1; i<activeItems.size(); i++) {
+			GameItem item = activeItems.get(i);
+			if(item.getColumn() < left.getColumn()) left = item;
 		}
 		if(left.getColumn()-1>=0) {
-			Puyo adjacent = map.getCase(left.getLine(), left.getColumn()-1).getPuyo();
-			if(adjacent == null || !(adjacent.getState() instanceof PuyoFixed)) {
-				for(int j=0; j< fallingPuyos.size(); j++) {
-					Puyo puyo = fallingPuyos.get(j);
-					map.getCase(puyo.getLine(), puyo.getColumn()-1).setPuyo(puyo);
-					puyo.setColumn(puyo.getColumn()-1);
-					map.getCase(puyo.getLine(), puyo.getColumn()+1).setPuyo(null);
+			Case adjacent = map.getCase(left.getLine(), left.getColumn()-1);
+			if(adjacent.getState() instanceof CaseEmpty) {
+				for(int j=0; j< activeItems.size(); j++) {
+					GameItem item = activeItems.get(j);
+					item.setColumn(item.getColumn()-1);
 				}
 			}
 		}
 	}
 
 	public void rotateLeft(){
-		if(fallingPuyos.size() > 1) {
-			Puyo puyo = fallingPuyos.get(fallingPuyos.size()-1);
-			Puyo axe = fallingPuyos.get(0);
-
-			if(axe.getColumn()<puyo.getColumn()){
-				map.getCase(axe.getLine()-1, axe.getColumn()).setPuyo(puyo);
-				map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-				puyo.setLine(axe.getLine()-1);
-				puyo.setColumn(axe.getColumn());
+		if(activeItems.size() > 1) {
+			GameItem item = activeItems.get(activeItems.size()-1);
+			GameItem axe = activeItems.get(0);
+			
+			// xy
+			//y
+			//x
+			if(axe.getColumn()<item.getColumn() && axe.getLine() > 0){
+				item.setLine(axe.getLine()-1);
+				item.setColumn(axe.getColumn());
 			}
-			else if(axe.getColumn()>puyo.getColumn()){
-				map.getCase(axe.getLine()+1, axe.getColumn()).setPuyo(puyo);
-				map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-				puyo.setLine(axe.getLine()+1);
-				puyo.setColumn(axe.getColumn());
+			// yx
+			//x
+			//y
+			else if(axe.getColumn()>item.getColumn()
+					&& axe.getLine() < Settings.MAP_HEIGHT-1
+					&& map.getCase(axe.getLine()+1, axe.getColumn()).getState() instanceof CaseEmpty){
+				item.setLine(axe.getLine()+1);
+				item.setColumn(axe.getColumn());
 			}
 
-			else if(axe.getColumn()==puyo.getColumn()){
-				if(axe.getLine() > puyo.getLine()) {
-					map.getCase(axe.getLine(), axe.getColumn()-1).setPuyo(puyo);
-					map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-					puyo.setLine(axe.getLine());
-					puyo.setColumn(axe.getColumn()-1);
+			else if(axe.getColumn()==item.getColumn()){
+				//y
+				//x
+				//yx
+				if(axe.getLine() > item.getLine()
+						&& axe.getColumn() > 0
+						&& map.getCase(axe.getLine(), axe.getColumn()-1).getState() instanceof CaseEmpty) {
+					item.setLine(axe.getLine());
+					item.setColumn(axe.getColumn()-1);
 				}
-				else {
-					map.getCase(axe.getLine(), axe.getColumn()+1).setPuyo(puyo);
-					map.getCase(puyo.getLine(), puyo.getColumn()).setPuyo(null);
-					puyo.setLine(axe.getLine());
-					puyo.setColumn(axe.getColumn()+1);
+				//x
+				//y
+				//xy
+				else if(axe.getLine() < item.getLine()
+						&& axe.getColumn() < Settings.MAP_WIDTH-1
+						&& map.getCase(axe.getLine(), axe.getColumn()+1).getState() instanceof CaseEmpty){
+					item.setLine(axe.getLine());
+					item.setColumn(axe.getColumn()+1);
 				}
 			}
 		}
+		
 	}
 
 	public Dimension getMapDimension() {
@@ -175,7 +165,7 @@ public class GameEngine {
 
 	}
 
-	public List<Puyo> getFallers(){
-		return this.fallingPuyos;
+	public List<GameItem> getActiveItems(){
+		return this.activeItems;
 	}
 }

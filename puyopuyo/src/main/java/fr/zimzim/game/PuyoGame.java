@@ -65,7 +65,7 @@ public class PuyoGame implements IGame, Runnable {
 
 	@Override
 	public void run() {
-		engine.addFallingPuyos();
+		engine.addActiveItems();
 		while(isRunning) {
 			render.repaint();
 			try {
@@ -76,7 +76,7 @@ public class PuyoGame implements IGame, Runnable {
 			}
 			render.repaint();
 			if(!engine.fall()) {
-				engine.addFallingPuyos();
+				engine.addActiveItems();
 			}
 			
 		}
