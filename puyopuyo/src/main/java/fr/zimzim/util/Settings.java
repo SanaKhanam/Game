@@ -1,0 +1,13 @@
+package fr.zimzim.util;
+
+public class Settings {
+
+	public static final int MAP_HEIGHT = 12;
+	public static final int MAP_WIDTH = 6;
+	public static final int PUYO_EMPTY = 0;
+	public static final int PUYO_GREEN = 1;
+	public static final int PUYO_YELLOW = 2;
+	public static final int PUYO_RED = 3;
+	public static final int PUYO_BLUE = 4;
+	public static final int NB_FALLING_PUYOS = 2;
+}
