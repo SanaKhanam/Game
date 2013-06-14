@@ -9,7 +9,7 @@ public class Settings {
 	public static final int PUYO_YELLOW = 2;
 	public static final int PUYO_RED = 3;
 	public static final int PUYO_BLUE = 4;
-	public static final int NB_FALLING_PUYOS = 2;
+	public static final int NB_FALLING_PUYOS = 1;
 	public static final int TAILLE_PIXELS = 32;
 	public static final int COMBO_SIZE = 4;
 	public static final String IMG_PUYO_GREEN = "/img/p_green.png";

@@ -68,10 +68,9 @@ public class PuyoGame implements IGame, Runnable {
 				sleep(SLEEP_TIME);
 				render.repaint();
 				if(engine.fall()) {
-					engine.addActiveItems();
-				}
-				else {
 					engine.checkMap();
+					engine.addActiveItems();
+					
 				}
 			}
 		}
