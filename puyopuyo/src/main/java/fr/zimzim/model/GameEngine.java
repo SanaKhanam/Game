@@ -32,8 +32,8 @@ public class GameEngine {
 
 	public void addActiveItems() {
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			GameItem item = new Puyo(0,i+2,3);
-			//GameItem item = new Puyo(0,i+2,randomGenerator.nextInt(4)+1);
+			//GameItem item = new Puyo(0,i+2,3);
+			GameItem item = new Puyo(0,i+2,randomGenerator.nextInt(4)+1);
 			activeItems.add(item);
 		}
 	}
@@ -220,7 +220,12 @@ public class GameEngine {
 	}
 	
 	private void refreshMap() {
-		// TODO Auto-generated method stub
+		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
+			for(int j=0; j<Settings.MAP_WIDTH; j++) {
+				Case c = map.getCase(i, j);
+				//TODO
+			}
+		}
 		
 	}
 
@@ -263,7 +268,7 @@ public class GameEngine {
 				
 				
 		}
-		if(candidates.size() == 0 && !l.isEmpty()) {
+		if(candidates.size() == 0 && l.size() >= Settings.COMBO_SIZE-1) {
 			l.add(c);
 			return l;
 		}
