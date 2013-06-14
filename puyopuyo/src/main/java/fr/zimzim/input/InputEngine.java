@@ -3,14 +3,17 @@ package fr.zimzim.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import fr.zimzim.game.IGame;
 import fr.zimzim.model.GameEngine;
 
 public class InputEngine implements KeyListener{
 
 	private GameEngine engine;
+	private IGame game;
 
-	public InputEngine(GameEngine engine) {
+	public InputEngine(GameEngine engine, IGame game) {
 		this.engine = engine;
+		this.game = game;
 	}
 
 	@Override
@@ -27,6 +30,9 @@ public class InputEngine implements KeyListener{
 			break;
 		case KeyEvent.VK_D:
 			engine.rotateRight();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			game.pause();
 			break;
 		case KeyEvent.VK_6:
 			break;
