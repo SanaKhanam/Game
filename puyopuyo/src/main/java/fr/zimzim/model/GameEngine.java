@@ -240,10 +240,9 @@ public class GameEngine {
 					}
 					if(line != c.getLine()) {
 						map.getCase(line, c.getColumn()).setState(CaseBusy.getInstance());
-						c.setItem(c.getItem());
-						map.getCase(line, c.getColumn()).getItem().setLine(line);
-						c.setState(CaseEmpty.getInstance());
+						map.getCase(line, c.getColumn()).setItem(c.getItem());
 						c.setItem(null);
+						c.setState(CaseEmpty.getInstance());
 					}
 				}
 			}
