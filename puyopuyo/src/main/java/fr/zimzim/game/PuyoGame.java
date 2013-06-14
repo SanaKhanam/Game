@@ -70,6 +70,9 @@ public class PuyoGame implements IGame, Runnable {
 				if(engine.fall()) {
 					engine.addActiveItems();
 				}
+				else {
+					engine.checkMap();
+				}
 			}
 		}
 

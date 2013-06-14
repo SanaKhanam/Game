@@ -201,9 +201,11 @@ public class GameEngine {
 	}
 	
 	public void checkMap() {
-		for(int i=0; i<map.getHeight(); i++) {
-			for(int j=0; j<map.getWidth(); j++) {
+		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
+			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				if(map.getCase(i, j).getState() instanceof CaseBusy) {
+					System.out.println("i "+i+"j "+j);
+					System.out.println(map.getCase(i, j).getItem().getType());
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete.get(0), toDelete);
@@ -233,8 +235,41 @@ public class GameEngine {
 	}
 
 	private List<Case> getCaseToDelete(Case c, List<Case> l) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Case> successors = getSuccessors(c);
+		System.out.println("succ before resized "+successors.size());
+		for(int i = 0; i<successors.size(); i++) {
+			Case current = successors.get(i);
+			System.out.println(current.getLine()+" "+current.getColumn());
+			if(l.contains(current)
+					|| current.getState() instanceof CaseEmpty 
+					|| current.getItem().getType() != c.getItem().getType())
+				successors.remove(current);
+		}
+		System.out.println(successors.size());
+		for(int i = 0; i<successors.size(); i++) {
+			System.out.println("new i"+successors.get(i).getLine()+" new j"+successors.get(i).getColumn());
+		}
+		if(successors.size() > 0) {
+			for(int i =0; i<successors.size(); i++) {
+				Case succ = successors.get(i);
+				successors.remove(succ);
+				l = getCaseToDelete(succ, l);
+			}
+			return l;
+		}
+		else return l;
+	}
+
+	private List<Case> getSuccessors(Case c) {
+		List<Case> result = new ArrayList<Case>();
+		int line = c.getLine();
+		int col = c.getColumn();
+		
+		if(line > 0) result.add(map.getCase(line-1, col));
+		if(line < Settings.MAP_HEIGHT-1) result.add(map.getCase(line+1, col));
+		if(col > 0) result.add(map.getCase(line, col-1));
+		if(col < Settings.MAP_WIDTH-1) result.add(map.getCase(line, col+1));
+		return result;
 	}
 
 	public Dimension getMapDimension() {

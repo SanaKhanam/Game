@@ -9,13 +9,13 @@ public class Case {
 	
 	private GameItem item;
 	private CaseState state;
-	private int posX;
-	private int posY;
+	private int line;
+	private int col;
 	
-	public Case(GameItem item, int posX, int posY) {
+	public Case(GameItem item, int line, int col) {
 		this.item = item;
-		this.posX = posX;
-		this.posY = posY;
+		this.line = line;
+		this.col = col;
 		this.state = CaseEmpty.getInstance();
 	}
 	
@@ -32,17 +32,17 @@ public class Case {
 	public void setItem(GameItem item) {
 		this.item = item;
 	}
-	public int getPosX() {
-		return this.posX;
+	public int getLine() {
+		return this.line;
 	}
-	public void setPosX(int posX) {
-		this.posX = posX;
+	public void setLine(int line) {
+		this.line = line;
 	}
-	public int getPosY() {
-		return this.posY;
+	public int getColumn() {
+		return this.col;
 	}
-	public void setPosY(int posY) {
-		this.posY = posY;
+	public void setColumn(int col) {
+		this.col = col;
 	}
 
 }
