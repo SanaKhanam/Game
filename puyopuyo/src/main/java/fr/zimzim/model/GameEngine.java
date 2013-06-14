@@ -30,7 +30,7 @@ public class GameEngine {
 
 	public void addActiveItems() {
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			GameItem item = new Puyo(1,i+2,randomGenerator.nextInt(4)+1);
+			GameItem item = new Puyo(0,i+2,randomGenerator.nextInt(4)+1);
 			activeItems.add(item);
 		}
 	}
