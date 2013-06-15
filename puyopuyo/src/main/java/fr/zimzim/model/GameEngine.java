@@ -10,6 +10,7 @@ import fr.zimzim.casestate.CaseEmpty;
 import fr.zimzim.meshe.GameItem;
 import fr.zimzim.meshe.Puyo;
 import fr.zimzim.observer.MyObservable;
+import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
 public class GameEngine {
@@ -32,11 +33,15 @@ public class GameEngine {
 		this.randomGenerator = new Random();
 	}
 
-	public void addActiveItems() {
+	public boolean addActiveItems() {
+		for(int i=0; i<Settings.MAP_WIDTH; i++) {
+			if(map.getCase(0, i).getState() instanceof CaseBusy) return false;
+		}
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
 			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4)+1);
 			activeItems.add(item);
 		}
+		return true;
 	}
 
 	public boolean fall() {
@@ -203,12 +208,15 @@ public class GameEngine {
 	}
 
 	public boolean checkMap() {
+		boolean delete = false;
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete);
+						SoundEngine.KICK.play();
+						delete = true;
 						refreshMap();
 					}
 				}
@@ -219,7 +227,7 @@ public class GameEngine {
 				hasBeenChecked[i][j] = false;
 			}
 		}
-		return true;
+		return delete;
 	}
 
 	private void refreshMap() {

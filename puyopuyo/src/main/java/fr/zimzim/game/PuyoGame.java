@@ -7,8 +7,9 @@ import fr.zimzim.render.RenderEngine;
 import fr.zimzim.sound.SoundEngine;
 
 public class PuyoGame implements IGame, Runnable {
-
-	private static final int SLEEP_TIME = 300;
+	
+	private static int DIFFICULTY_RANGE = 10;
+	private int delay;
 	private GameEngine engine;
 	private RenderEngine render;
 	private InputEngine input;
@@ -35,6 +36,7 @@ public class PuyoGame implements IGame, Runnable {
 	public void start() {
 		frame.setVisible(true);
 		isRunning = true;
+		this.delay = 300;
 		SoundEngine.volume = SoundEngine.Volume.LOW;
 		SoundEngine.AMBIANCE.play();
 		gameThread = new Thread(this);
@@ -76,18 +78,28 @@ public class PuyoGame implements IGame, Runnable {
 	public void run() {
 		engine.addActiveItems();
 		while(isRunning) {
+			
 			if(!pause) {
 				render.repaint();
-				sleep(SLEEP_TIME);
+				sleep(delay);
 				//render.repaint();
 				if(engine.fall()) {
-					engine.checkMap();
-					engine.addActiveItems();
+					if(engine.checkMap()) increaseDifficulty();
+					if(!engine.addActiveItems()){
+						isRunning = false;
+					}
 					
 				}
 			}
 		}
 
+	}
+	
+	private void increaseDifficulty() {
+		int value = (this.delay*DIFFICULTY_RANGE)/100;
+		this.delay = this.delay-value;
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void sleep(int time) {

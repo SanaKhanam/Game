@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import fr.zimzim.game.IGame;
 import fr.zimzim.model.GameEngine;
+import fr.zimzim.sound.SoundEngine;
 
 public class InputEngine implements KeyListener{
 
@@ -24,17 +25,20 @@ public class InputEngine implements KeyListener{
 			break;
 		case KeyEvent.VK_RIGHT:
 			engine.moveRight();
+			
 			break;
 		case KeyEvent.VK_Q:
+			SoundEngine.FLIP.play();
 			engine.rotateLeft();
 			break;
 		case KeyEvent.VK_D:
+			SoundEngine.FLIP.play();
 			engine.rotateRight();
 			break;
 		case KeyEvent.VK_ESCAPE:
 			game.pause();
 			break;
-		case KeyEvent.VK_6:
+		case KeyEvent.VK_M:
 			break;
 		case KeyEvent.VK_8:
 			break;

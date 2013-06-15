@@ -22,4 +22,6 @@ public class Settings {
 	public static final String IMG_CADRE = "/img/cadre.png";
 	public static final String AMBIANCE_URL = "/sounds/ambiance.wav";
 	public static final String PAUSE_URL = "/sounds/pause.wav";
+	public static final String FLIP_URL = "/sounds/flip.wav";
+	public static final String KICK_URL = "/sounds/kick.wav";
 }

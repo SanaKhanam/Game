@@ -14,6 +14,8 @@ import fr.zimzim.util.Settings;
 
 public enum SoundEngine{
 	AMBIANCE(Settings.AMBIANCE_URL),
+	FLIP(Settings.FLIP_URL),
+	KICK(Settings.KICK_URL),
 	PAUSE(Settings.PAUSE_URL);
 	
 	  // Nested class for specifying volume
@@ -74,5 +76,7 @@ public enum SoundEngine{
 	   public static void init() {
 	      values(); // calls the constructor for all the elements
 	   }
+	   
+	   
 
 }
