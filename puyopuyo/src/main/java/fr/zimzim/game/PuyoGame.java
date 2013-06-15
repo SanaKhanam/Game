@@ -4,6 +4,7 @@ import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.render.RenderEngine;
+import fr.zimzim.sound.SoundEngine;
 
 public class PuyoGame implements IGame, Runnable {
 
@@ -23,6 +24,7 @@ public class PuyoGame implements IGame, Runnable {
 		this.render = new RenderEngine(engine);
 		this.input = new InputEngine(engine, this);	
 		this.frame = new MainFrame(render);
+		
 
 		frame.addKeyListener(input);
 
@@ -33,6 +35,8 @@ public class PuyoGame implements IGame, Runnable {
 	public void start() {
 		frame.setVisible(true);
 		isRunning = true;
+		SoundEngine.volume = SoundEngine.Volume.LOW;
+		SoundEngine.AMBIANCE.play();
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -40,6 +44,15 @@ public class PuyoGame implements IGame, Runnable {
 	@Override
 	public void pause() {
 		pause = !pause;
+		if(pause) {
+			SoundEngine.AMBIANCE.pause();
+			SoundEngine.PAUSE.play();
+		}
+		else {
+			SoundEngine.PAUSE.play();
+			SoundEngine.AMBIANCE.pause();
+			
+		}
 	}
 
 	@Override
@@ -66,7 +79,7 @@ public class PuyoGame implements IGame, Runnable {
 			if(!pause) {
 				render.repaint();
 				sleep(SLEEP_TIME);
-				render.repaint();
+				//render.repaint();
 				if(engine.fall()) {
 					engine.checkMap();
 					engine.addActiveItems();
