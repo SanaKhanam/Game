@@ -4,11 +4,10 @@ public class Settings {
 
 	public static final int MAP_HEIGHT = 12;
 	public static final int MAP_WIDTH = 6;
-	public static final int PUYO_EMPTY = 0;
-	public static final int PUYO_GREEN = 1;
-	public static final int PUYO_YELLOW = 2;
-	public static final int PUYO_RED = 3;
-	public static final int PUYO_BLUE = 4;
+	public static final int PUYO_GREEN = 0;
+	public static final int PUYO_YELLOW = 1;
+	public static final int PUYO_RED = 2;
+	public static final int PUYO_BLUE = 3;
 	public static final int NB_FALLING_PUYOS = 2;
 	public static final int TAILLE_PIXELS = 32;
 	public static final int COMBO_SIZE = 4;
@@ -24,4 +23,5 @@ public class Settings {
 	public static final String PAUSE_URL = "/sounds/pause.wav";
 	public static final String FLIP_URL = "/sounds/flip.wav";
 	public static final String KICK_URL = "/sounds/kick.wav";
+	public static final String FINISH_URL = "/sounds/finish.wav";
 }

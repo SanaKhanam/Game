@@ -1,5 +1,7 @@
 package fr.zimzim.model;
 
+import fr.zimzim.casestate.CaseEmpty;
+
 public class Map {
 	
 	private int height;
@@ -20,6 +22,14 @@ public class Map {
 		}
 	}
 	
+	public void clear(){
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				this.map[i][j].setItem(null);
+				this.map[i][j].setState(CaseEmpty.getInstance());
+			}
+		}
+	}
 	public Case getCase(int i, int j) {
 		return this.map[i][j];
 	}

@@ -3,6 +3,7 @@ package fr.zimzim.model;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.Random;
 
 import fr.zimzim.casestate.CaseBusy;
@@ -19,7 +20,7 @@ public class GameEngine {
 	private Map map;
 	private boolean[][] hasBeenChecked;
 	private List<GameItem> activeItems;
-	private List<GameItem> nextFallingPuyos;
+	private List<GameItem> nextFallingItem;
 	private List<GameItem> toBeRemoved;
 	private Random randomGenerator;
 	private MyObservable observable;
@@ -28,19 +29,34 @@ public class GameEngine {
 		this.map = new Map(Settings.MAP_HEIGHT, Settings.MAP_WIDTH);
 		this.hasBeenChecked = new boolean[Settings.MAP_HEIGHT][Settings.MAP_WIDTH];
 		this.activeItems = new ArrayList<GameItem>();
-		this.nextFallingPuyos = new ArrayList<GameItem>();
+		this.nextFallingItem = new ArrayList<GameItem>();
 		this.toBeRemoved = new ArrayList<GameItem>();
 		this.randomGenerator = new Random();
+		this.observable = new MyObservable();
 	}
-
+	
+	public void init() {
+		this.activeItems.clear();
+		this.map.clear();
+		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
+			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
+			nextFallingItem.add(item);
+		}
+		observable.setChanged();
+		observable.notifyObservers(this);
+	}
 	public boolean addActiveItems() {
+		activeItems.addAll(nextFallingItem);
+		nextFallingItem.clear();
 		for(int i=0; i<Settings.MAP_WIDTH; i++) {
 			if(map.getCase(0, i).getState() instanceof CaseBusy) return false;
 		}
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4)+1);
-			activeItems.add(item);
+			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
+			nextFallingItem.add(item);
 		}
+		observable.setChanged();
+		observable.notifyObservers(this);
 		return true;
 	}
 
@@ -76,6 +92,8 @@ public class GameEngine {
 				activeItems.remove(other);
 			}
 		}
+		observable.setChanged();
+		observable.notifyObservers(this);
 		return hit;
 	}
 
@@ -103,7 +121,7 @@ public class GameEngine {
 			GameItem item = activeItems.get(i);
 			if(item.getColumn() < left.getColumn()) left = item;
 		}
-		if(left.getColumn()-1>=0) {
+		if(left.getColumn()>0) {
 			Case adjacent = map.getCase(left.getLine(), left.getColumn()-1);
 			if(adjacent.getState() instanceof CaseEmpty) {
 				for(int j=0; j< activeItems.size(); j++) {
@@ -308,4 +326,13 @@ public class GameEngine {
 	public List<GameItem> getActiveItems(){
 		return this.activeItems;
 	}
+	
+	public List<GameItem> getNextItems(){
+		return this.nextFallingItem;
+	}
+	
+	public void addObserver(Observer o) {
+		this.observable.addObserver(o);
+	}
+	
 }

@@ -16,6 +16,7 @@ public enum SoundEngine{
 	AMBIANCE(Settings.AMBIANCE_URL),
 	FLIP(Settings.FLIP_URL),
 	KICK(Settings.KICK_URL),
+	FINISH(Settings.FINISH_URL),
 	PAUSE(Settings.PAUSE_URL);
 	
 	  // Nested class for specifying volume
@@ -38,9 +39,9 @@ public enum SoundEngine{
 	         clip = AudioSystem.getClip();
 	         // Open audio clip and load samples from the audio input stream.
 	         clip.open(audioInputStream);
-	         if(sound.equals(Settings.AMBIANCE_URL)) {
-	        	 clip.loop(Clip.LOOP_CONTINUOUSLY);
-	         }
+//	         if(sound.equals(Settings.AMBIANCE_URL)) {
+//	        	 clip.loop(Clip.LOOP_CONTINUOUSLY);
+//	         }
 	      } catch (UnsupportedAudioFileException e) {
 	         e.printStackTrace();
 	      } catch (IOException e) {
@@ -76,6 +77,11 @@ public enum SoundEngine{
 	   public static void init() {
 	      values(); // calls the constructor for all the elements
 	   }
+
+	public void setInfiniteLoop() {
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		
+	}
 	   
 	   
 

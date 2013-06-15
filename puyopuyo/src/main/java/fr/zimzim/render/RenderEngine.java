@@ -7,9 +7,11 @@ import fr.zimzim.util.Settings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class RenderEngine extends JComponent {
+public class RenderEngine extends JComponent implements Observer{
 
 	/**
 	 * 
@@ -27,8 +29,7 @@ public class RenderEngine extends JComponent {
 		this.setPreferredSize(new Dimension((Settings.TAILLE_PIXELS*Settings.MAP_WIDTH)+(Settings.LEFT_RIM_CADRE*2),
 				(Settings.TAILLE_PIXELS*Settings.MAP_HEIGHT)+(Settings.TOP_RIM_CADRE*2)));
 		this.cadre = getToolkit().getImage(this.getClass().getResource(Settings.IMG_CADRE));
-		this.images = new Image[5];
-        this.images[Settings.PUYO_EMPTY] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_EMPTY));
+		this.images = new Image[4];
         this.images[Settings.PUYO_GREEN] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_GREEN));
         this.images[Settings.PUYO_YELLOW] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_YELLOW));
         this.images[Settings.PUYO_RED] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_RED));
@@ -64,6 +65,11 @@ public class RenderEngine extends JComponent {
 					null);
 		}
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
 	}
 
 }

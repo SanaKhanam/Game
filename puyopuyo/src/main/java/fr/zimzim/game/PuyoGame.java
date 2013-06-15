@@ -3,6 +3,7 @@ package fr.zimzim.game;
 import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
+import fr.zimzim.render.NextItemDisplayer;
 import fr.zimzim.render.RenderEngine;
 import fr.zimzim.sound.SoundEngine;
 
@@ -14,6 +15,7 @@ public class PuyoGame implements IGame, Runnable {
 	private RenderEngine render;
 	private InputEngine input;
 	private MainFrame frame;
+	private NextItemDisplayer itemDisplayer;
 	private Thread gameThread;
 	private boolean isRunning;
 	private boolean pause = false;
@@ -24,7 +26,10 @@ public class PuyoGame implements IGame, Runnable {
 		this.engine = new GameEngine();
 		this.render = new RenderEngine(engine);
 		this.input = new InputEngine(engine, this);	
-		this.frame = new MainFrame(render);
+		this.itemDisplayer = new NextItemDisplayer();
+		this.engine.addObserver(itemDisplayer);
+		this.engine.addObserver(render);
+		this.frame = new MainFrame(render, itemDisplayer);
 		
 
 		frame.addKeyListener(input);
@@ -37,8 +42,10 @@ public class PuyoGame implements IGame, Runnable {
 		frame.setVisible(true);
 		isRunning = true;
 		this.delay = 300;
+		engine.init();
 		SoundEngine.volume = SoundEngine.Volume.LOW;
-		SoundEngine.AMBIANCE.play();
+		//SoundEngine.AMBIANCE.play();
+		//SoundEngine.AMBIANCE.setInfiniteLoop();
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -80,14 +87,18 @@ public class PuyoGame implements IGame, Runnable {
 		while(isRunning) {
 			
 			if(!pause) {
-				render.repaint();
+				//render.repaint();
 				sleep(delay);
 				//render.repaint();
 				if(engine.fall()) {
 					if(engine.checkMap()) increaseDifficulty();
 					if(!engine.addActiveItems()){
 						isRunning = false;
+						//SoundEngine.AMBIANCE.pause();
+						SoundEngine.FINISH.play();
+						this.frame.endGame();
 					}
+					
 					
 				}
 			}
