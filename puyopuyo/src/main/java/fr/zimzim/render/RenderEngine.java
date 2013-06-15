@@ -19,15 +19,14 @@ public class RenderEngine extends JComponent {
 	
 
 	private Image[] images;
+	private Image cadre;
 	private GameEngine gameEngine;
-	private Dimension dimension;
 
 	public RenderEngine(GameEngine game) {
 		this.gameEngine = game;
-		this.dimension = new Dimension(Settings.MAP_WIDTH, Settings.MAP_HEIGHT);
-		this.setPreferredSize(new Dimension(Settings.TAILLE_PIXELS*dimension.width,
-				Settings.TAILLE_PIXELS*dimension.height));
-		
+		this.setPreferredSize(new Dimension((Settings.TAILLE_PIXELS*Settings.MAP_WIDTH)+(Settings.LEFT_RIM_CADRE*2),
+				(Settings.TAILLE_PIXELS*Settings.MAP_HEIGHT)+(Settings.TOP_RIM_CADRE*2)));
+		this.cadre = getToolkit().getImage(this.getClass().getResource(Settings.IMG_CADRE));
 		this.images = new Image[5];
         this.images[Settings.PUYO_EMPTY] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_EMPTY));
         this.images[Settings.PUYO_GREEN] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_GREEN));
@@ -40,23 +39,28 @@ public class RenderEngine extends JComponent {
 
 	public void paint(Graphics g) {
 		super.paint(g);
+		g.drawImage(this.cadre,
+				0,
+				0,
+				null);
 		g.setColor(Color.green);
-		g.drawRect(0, 0, this.dimension.width*Settings.TAILLE_PIXELS, this.dimension.height*Settings.TAILLE_PIXELS);
-		for(int i=0; i<this.dimension.height; i++){
-			for(int j=0; j<this.dimension.width; j++){
+		g.drawRect(Settings.LEFT_RIM_CADRE, Settings.TOP_RIM_CADRE, Settings.MAP_WIDTH*Settings.TAILLE_PIXELS, Settings.MAP_HEIGHT*Settings.TAILLE_PIXELS);
+		for(int i=0; i<Settings.MAP_HEIGHT; i++){
+			for(int j=0; j<Settings.MAP_WIDTH; j++){
 				if(gameEngine.getCase(i,j).getState() instanceof CaseBusy)
 					g.drawImage(this.images[gameEngine.getCase(i,j).getItem().getType()],
-							j*Settings.TAILLE_PIXELS,
-							i*Settings.TAILLE_PIXELS,
+							(j*Settings.TAILLE_PIXELS)+Settings.LEFT_RIM_CADRE,
+							(i*Settings.TAILLE_PIXELS)+Settings.TOP_RIM_CADRE,
 							null);
 			}
 		}
 		
 		for(int i=0; i<this.gameEngine.getActiveItems().size(); i++) {
 			GameItem item = gameEngine.getActiveItems().get(i);
+			if(item.getLine() !=-1)
 			g.drawImage(this.images[item.getType()],
-					item.getColumn()*Settings.TAILLE_PIXELS,
-					item.getLine()*Settings.TAILLE_PIXELS,
+					(item.getColumn()*Settings.TAILLE_PIXELS)+Settings.LEFT_RIM_CADRE,
+					(item.getLine()*Settings.TAILLE_PIXELS)+Settings.TOP_RIM_CADRE,
 					null);
 		}
 
