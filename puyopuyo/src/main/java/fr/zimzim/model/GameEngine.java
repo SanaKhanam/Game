@@ -207,13 +207,11 @@ public class GameEngine {
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
-					System.out.println("/////////////");
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete);
 						refreshMap();
 					}
-					else System.out.println("nada");
 				}
 			}
 		}
@@ -256,23 +254,22 @@ public class GameEngine {
 		}
 	}
 
-	private List<Case> getCaseToDelete(Case c, List<Case> l) {
-		List<Case> successors = getSuccessors(c, l);
+	private List<Case> getCaseToDelete(Case c, List<Case> toKick) {
+		List<Case> successors = getSuccessors(c, toKick);
+		if(!toKick.contains(c)) toKick.add(c);
 		if(successors.size() == 0) {
-			l.add(c);
-			return l;
+			return toKick;
 		}
-		if(successors.size() > 0) {
+		else{
 			for(int i =0; i<successors.size(); i++) {
 				Case succ = successors.get(i);
-				if(!l.contains(succ)){
-					l.add(c);
+				if(!toKick.contains(succ)){
 					hasBeenChecked[succ.getLine()][succ.getColumn()] = true;
-					getCaseToDelete(succ, l);
+					getCaseToDelete(succ, toKick);
 				}
 			}
 		}
-		return l;
+		return toKick;
 	}
 
 	private List<Case> getSuccessors(Case c, List<Case> l) {
