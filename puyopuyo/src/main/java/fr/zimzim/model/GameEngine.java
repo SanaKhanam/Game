@@ -98,12 +98,13 @@ public class GameEngine {
 	}
 
 	public void moveRight() {
+		
 		GameItem right = activeItems.get(0);
 		for(int i=1; i<activeItems.size(); i++) {
 			GameItem item = activeItems.get(i);
 			if(item.getColumn() > right.getColumn()) right = item;
 		}
-		if(right.getColumn()+1<Settings.MAP_WIDTH) {
+		if(right.getLine() != -1 && right.getColumn()+1<Settings.MAP_WIDTH){
 			Case adjacent = map.getCase(right.getLine(), right.getColumn()+1);
 			if(adjacent.getState() instanceof CaseEmpty) {
 				for(int j=0; j< activeItems.size(); j++) {
@@ -121,7 +122,7 @@ public class GameEngine {
 			GameItem item = activeItems.get(i);
 			if(item.getColumn() < left.getColumn()) left = item;
 		}
-		if(left.getColumn()>0) {
+		if(left.getLine() != -1 && left.getColumn()>0) {
 			Case adjacent = map.getCase(left.getLine(), left.getColumn()-1);
 			if(adjacent.getState() instanceof CaseEmpty) {
 				for(int j=0; j< activeItems.size(); j++) {
