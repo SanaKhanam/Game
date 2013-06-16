@@ -11,6 +11,12 @@ import fr.zimzim.render.NextItemDisplayer;
 import fr.zimzim.render.RenderEngine;
 import fr.zimzim.render.ScoreDisplayer;
 
+/**
+ * 
+ * @author Simon Jambu
+ * The frame that holds all graphical components.
+ */
+
 public class MainFrame extends JFrame {
 
 	/**
@@ -20,7 +26,13 @@ public class MainFrame extends JFrame {
 	private JPanel panel, east;
 	private static final String NAME = "Puyo Game";
 	
-	public MainFrame(RenderEngine r, NextItemDisplayer itemDisplayer, ScoreDisplayer scoreDisplayer) {
+	/**
+	 * Frame constructor
+	 * @param render: 
+	 * @param itemDisplayer
+	 * @param scoreDisplayer
+	 */
+	public MainFrame(RenderEngine render, NextItemDisplayer itemDisplayer, ScoreDisplayer scoreDisplayer) {
 		super(NAME);
 		this.panel = new JPanel();
 		this.east = new JPanel();
@@ -29,7 +41,7 @@ public class MainFrame extends JFrame {
 		
 		this.east.add(itemDisplayer);
 		this.east.add(scoreDisplayer);
-		this.panel.add(r, BorderLayout.CENTER);
+		this.panel.add(render, BorderLayout.CENTER);
 		this.panel.add(this.east, BorderLayout.EAST);
 		this.setContentPane(panel);
 		
