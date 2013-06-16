@@ -1,10 +1,13 @@
 package fr.zimzim.game;
 
+import javax.swing.JOptionPane;
+
 import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.render.NextItemDisplayer;
 import fr.zimzim.render.RenderEngine;
+import fr.zimzim.render.ScoreDisplayer;
 import fr.zimzim.sound.SoundEngine;
 
 public class PuyoGame implements IGame, Runnable {
@@ -16,6 +19,7 @@ public class PuyoGame implements IGame, Runnable {
 	private InputEngine input;
 	private MainFrame frame;
 	private NextItemDisplayer itemDisplayer;
+	private ScoreDisplayer scoreDisplayer;
 	private Thread gameThread;
 	private boolean isRunning;
 	private boolean pause = false;
@@ -27,9 +31,11 @@ public class PuyoGame implements IGame, Runnable {
 		this.render = new RenderEngine(engine);
 		this.input = new InputEngine(engine, this);	
 		this.itemDisplayer = new NextItemDisplayer();
+		this.scoreDisplayer = new ScoreDisplayer();
 		this.engine.addObserver(itemDisplayer);
 		this.engine.addObserver(render);
-		this.frame = new MainFrame(render, itemDisplayer);
+		this.engine.addObserver(scoreDisplayer);
+		this.frame = new MainFrame(render, itemDisplayer, scoreDisplayer);
 		
 
 		frame.addKeyListener(input);
@@ -39,15 +45,15 @@ public class PuyoGame implements IGame, Runnable {
 
 	@Override
 	public void start() {
-		frame.setVisible(true);
-		isRunning = true;
+		this.frame.setVisible(true);
+		this.isRunning = true;
 		this.delay = 300;
-		engine.init();
+		this.engine.init();
 		SoundEngine.volume = SoundEngine.Volume.LOW;
 		//SoundEngine.AMBIANCE.play();
 		//SoundEngine.AMBIANCE.setInfiniteLoop();
-		gameThread = new Thread(this);
-		gameThread.start();
+		this.gameThread = new Thread(this);
+		this.gameThread.start();
 	}
 
 	@Override
@@ -93,16 +99,23 @@ public class PuyoGame implements IGame, Runnable {
 				if(engine.fall()) {
 					if(engine.checkMap()) increaseDifficulty();
 					if(!engine.addActiveItems()){
-						isRunning = false;
 						//SoundEngine.AMBIANCE.pause();
 						SoundEngine.FINISH.play();
-						this.frame.endGame();
+						boolean replay = this.frame.endGame(engine.getScore());
+						
+						if(!replay) stop();
+						else {
+							this.engine.init();
+							this.scoreDisplayer.clear();
+							this.engine.addActiveItems();
+						}
 					}
 					
 					
 				}
 			}
 		}
+		exit();
 
 	}
 	
@@ -120,6 +133,7 @@ public class PuyoGame implements IGame, Runnable {
 			e.printStackTrace();
 		}
 	}
+
 
 
 

@@ -19,6 +19,7 @@ public class Settings {
 	public static final String IMG_PUYO_YELLOW = "/img/p_yellow.png";
 	public static final String IMG_PUYO_EMPTY = "/img/puyo_empty.png";
 	public static final String IMG_CADRE = "/img/cadre.png";
+	public static final String IMG_SMALL_CADRE = "/img/cadre2.png";
 	public static final String AMBIANCE_URL = "/sounds/ambiance.wav";
 	public static final String PAUSE_URL = "/sounds/pause.wav";
 	public static final String FLIP_URL = "/sounds/flip.wav";

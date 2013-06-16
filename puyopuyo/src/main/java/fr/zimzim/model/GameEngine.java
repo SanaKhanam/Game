@@ -21,16 +21,15 @@ public class GameEngine {
 	private boolean[][] hasBeenChecked;
 	private List<GameItem> activeItems;
 	private List<GameItem> nextFallingItem;
-	private List<GameItem> toBeRemoved;
 	private Random randomGenerator;
 	private MyObservable observable;
+	private int score;
 
 	public GameEngine() {
 		this.map = new Map(Settings.MAP_HEIGHT, Settings.MAP_WIDTH);
 		this.hasBeenChecked = new boolean[Settings.MAP_HEIGHT][Settings.MAP_WIDTH];
 		this.activeItems = new ArrayList<GameItem>();
 		this.nextFallingItem = new ArrayList<GameItem>();
-		this.toBeRemoved = new ArrayList<GameItem>();
 		this.randomGenerator = new Random();
 		this.observable = new MyObservable();
 	}
@@ -234,6 +233,7 @@ public class GameEngine {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete);
+						this.score+=toDelete.size();
 						SoundEngine.KICK.play();
 						delete = true;
 						refreshMap();
@@ -334,6 +334,10 @@ public class GameEngine {
 	
 	public void addObserver(Observer o) {
 		this.observable.addObserver(o);
+	}
+
+	public int getScore() {
+		return this.score;
 	}
 	
 }

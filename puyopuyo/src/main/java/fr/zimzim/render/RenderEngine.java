@@ -34,7 +34,6 @@ public class RenderEngine extends JComponent implements Observer{
         this.images[Settings.PUYO_YELLOW] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_YELLOW));
         this.images[Settings.PUYO_RED] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_RED));
         this.images[Settings.PUYO_BLUE] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_BLUE));
-
 		repaint();
 	}
 
@@ -44,8 +43,6 @@ public class RenderEngine extends JComponent implements Observer{
 				0,
 				0,
 				null);
-		g.setColor(Color.green);
-		g.drawRect(Settings.LEFT_RIM_CADRE, Settings.TOP_RIM_CADRE, Settings.MAP_WIDTH*Settings.TAILLE_PIXELS, Settings.MAP_HEIGHT*Settings.TAILLE_PIXELS);
 		for(int i=0; i<Settings.MAP_HEIGHT; i++){
 			for(int j=0; j<Settings.MAP_WIDTH; j++){
 				if(gameEngine.getCase(i,j).getState() instanceof CaseBusy)
