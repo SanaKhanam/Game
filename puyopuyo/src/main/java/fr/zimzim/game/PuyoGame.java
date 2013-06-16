@@ -1,6 +1,5 @@
 package fr.zimzim.game;
 
-import javax.swing.JOptionPane;
 
 import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
@@ -9,6 +8,7 @@ import fr.zimzim.render.NextItemDisplayer;
 import fr.zimzim.render.RenderEngine;
 import fr.zimzim.render.ScoreDisplayer;
 import fr.zimzim.sound.SoundEngine;
+import fr.zimzim.util.Settings;
 
 public class PuyoGame implements IGame, Runnable {
 	
@@ -36,7 +36,7 @@ public class PuyoGame implements IGame, Runnable {
 		this.engine.addObserver(render);
 		this.engine.addObserver(scoreDisplayer);
 		this.frame = new MainFrame(render, itemDisplayer, scoreDisplayer);
-		
+		this.delay = Settings.INITIAL_DELAY;
 
 		frame.addKeyListener(input);
 
@@ -47,7 +47,6 @@ public class PuyoGame implements IGame, Runnable {
 	public void start() {
 		this.frame.setVisible(true);
 		this.isRunning = true;
-		this.delay = 300;
 		this.engine.init();
 		SoundEngine.volume = SoundEngine.Volume.LOW;
 		//SoundEngine.AMBIANCE.play();
@@ -60,12 +59,12 @@ public class PuyoGame implements IGame, Runnable {
 	public void pause() {
 		pause = !pause;
 		if(pause) {
-			SoundEngine.AMBIANCE.pause();
+			//SoundEngine.AMBIANCE.pause();
 			SoundEngine.PAUSE.play();
 		}
 		else {
 			SoundEngine.PAUSE.play();
-			SoundEngine.AMBIANCE.pause();
+			//SoundEngine.AMBIANCE.pause();
 			
 		}
 	}
@@ -91,32 +90,17 @@ public class PuyoGame implements IGame, Runnable {
 	public void run() {
 		engine.addActiveItems();
 		while(isRunning) {
-			
 			if(!pause) {
-				//render.repaint();
 				sleep(delay);
-				//render.repaint();
 				if(engine.fall()) {
 					if(engine.checkMap()) increaseDifficulty();
 					if(!engine.addActiveItems()){
-						//SoundEngine.AMBIANCE.pause();
-						SoundEngine.FINISH.play();
-						boolean replay = this.frame.endGame(engine.getScore());
-						
-						if(!replay) stop();
-						else {
-							this.engine.init();
-							this.scoreDisplayer.clear();
-							this.engine.addActiveItems();
-						}
+						gameOver();
 					}
-					
-					
 				}
 			}
 		}
 		exit();
-
 	}
 	
 	private void increaseDifficulty() {
@@ -126,11 +110,26 @@ public class PuyoGame implements IGame, Runnable {
 		
 	}
 
+	@SuppressWarnings("static-access")
 	public void sleep(int time) {
 		try {
 			gameThread.sleep(time);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void gameOver() {
+		//SoundEngine.AMBIANCE.pause();
+		SoundEngine.FINISH.play();
+		boolean replay = this.frame.endGame(engine.getScore());
+		
+		if(!replay) stop();
+		else {
+			this.engine.init();
+			this.scoreDisplayer.clear();
+			this.engine.addActiveItems();
+			this.delay = Settings.INITIAL_DELAY;
 		}
 	}
 

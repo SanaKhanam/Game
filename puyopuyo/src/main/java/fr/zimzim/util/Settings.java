@@ -13,6 +13,7 @@ public class Settings {
 	public static final int COMBO_SIZE = 4;
 	public static final int TOP_RIM_CADRE = 20;
 	public static final int LEFT_RIM_CADRE = 15;
+	public static final int INITIAL_DELAY = 300;
 	public static final String IMG_PUYO_GREEN = "/img/p_green.png";
 	public static final String IMG_PUYO_RED = "/img/p_red.png";
 	public static final String IMG_PUYO_BLUE = "/img/p_blue.png";

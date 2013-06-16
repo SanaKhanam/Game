@@ -78,18 +78,8 @@ public class GameEngine {
 		else {
 			map.getCase(tmp.getLine(), tmp.getColumn()).setState(CaseBusy.getInstance());
 			map.getCase(tmp.getLine(), tmp.getColumn()).setItem(tmp);
-			for(int j=0; j<activeItems.size(); j++) {
-				GameItem other = activeItems.get(j);
-				int line = other.getLine();
-
-				while(line+1 < Settings.MAP_HEIGHT && map.getCase(line+1, other.getColumn()).getState() instanceof CaseEmpty) {
-					line++;
-				}
-				other.setLine(line);
-				map.getCase(other.getLine(), other.getColumn()).setState(CaseBusy.getInstance());
-				map.getCase(other.getLine(), other.getColumn()).setItem(other);
-				activeItems.remove(other);
-			}
+			drop();
+			activeItems.clear();
 		}
 		observable.setChanged();
 		observable.notifyObservers(this);
@@ -97,7 +87,6 @@ public class GameEngine {
 	}
 
 	public void moveRight() {
-		
 		GameItem right = activeItems.get(0);
 		for(int i=1; i<activeItems.size(); i++) {
 			GameItem item = activeItems.get(i);
@@ -110,6 +99,8 @@ public class GameEngine {
 					GameItem item = activeItems.get(j);
 					item.setColumn(item.getColumn()+1);
 				}
+				observable.setChanged();
+				observable.notifyObservers(this);
 			}
 		}
 
@@ -128,8 +119,11 @@ public class GameEngine {
 					GameItem item = activeItems.get(j);
 					item.setColumn(item.getColumn()-1);
 				}
+				observable.setChanged();
+				observable.notifyObservers(this);
 			}
 		}
+		
 	}
 
 	public void rotateLeft(){
@@ -175,6 +169,8 @@ public class GameEngine {
 				}
 			}
 		}
+		observable.setChanged();
+		observable.notifyObservers(this);
 
 	}
 
@@ -222,6 +218,8 @@ public class GameEngine {
 				}
 			}
 		}
+		observable.setChanged();
+		observable.notifyObservers(this);
 
 	}
 
@@ -315,6 +313,33 @@ public class GameEngine {
 		}
 		return candidates;
 	}
+	
+	public void drop() {
+		boolean reverse = false;
+		for(int i=0; i<activeItems.size()-1; i++){
+			if(activeItems.get(i).getLine() < activeItems.get(i+1).getLine()) reverse = true;
+		}
+		if(reverse) {
+			List<GameItem> tmp = new ArrayList<GameItem>();
+			tmp.addAll(activeItems);
+			activeItems.clear();
+			for(int i=tmp.size()-1; i>=0; i--){
+				activeItems.add(tmp.get(i));
+			}
+		}
+			
+		for(int j=0; j<activeItems.size(); j++) {
+			GameItem other = activeItems.get(j);
+			int line = other.getLine();
+
+			while(line+1 < Settings.MAP_HEIGHT && map.getCase(line+1, other.getColumn()).getState() instanceof CaseEmpty) {
+				line++;
+			}
+			other.setLine(line);
+			map.getCase(other.getLine(), other.getColumn()).setState(CaseBusy.getInstance());
+			map.getCase(other.getLine(), other.getColumn()).setItem(other);
+		}
+	}
 
 	public Dimension getMapDimension() {
 		return new Dimension(Settings.MAP_WIDTH,Settings.MAP_HEIGHT);
@@ -339,5 +364,7 @@ public class GameEngine {
 	public int getScore() {
 		return this.score;
 	}
+
+	
 	
 }

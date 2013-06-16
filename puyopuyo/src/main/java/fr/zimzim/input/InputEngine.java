@@ -38,6 +38,9 @@ public class InputEngine implements KeyListener{
 		case KeyEvent.VK_ESCAPE:
 			game.pause();
 			break;
+		case KeyEvent.VK_SPACE:
+			engine.drop();
+			break;
 		case KeyEvent.VK_M:
 			break;
 		case KeyEvent.VK_8:
