@@ -14,17 +14,15 @@ import fr.zimzim.meshe.GameItem;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.util.Settings;
 
-public class NextItemDisplayer extends JComponent implements Observer{
+public class ItemRender extends JComponent implements Observer{
 	
-	/**
-	 * 
-	 */
+	public static final String NAME = "NextItem";
 	private List<GameItem> items;
 	private Image[] images;
 	private Image cadre;
 	private static final long serialVersionUID = 7326520990733045489L;
 	
-	public NextItemDisplayer() {
+	public ItemRender() {
 		this.items = new ArrayList<GameItem>();
 		this.cadre = getToolkit().getImage(this.getClass().getResource(Settings.IMG_SMALL_CADRE));
 		this.images = new Image[4];

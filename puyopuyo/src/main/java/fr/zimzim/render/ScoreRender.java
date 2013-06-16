@@ -9,16 +9,14 @@ import javax.swing.JPanel;
 
 import fr.zimzim.model.GameEngine;
 
-public class ScoreDisplayer extends JPanel implements Observer {
+public class ScoreRender extends JPanel implements Observer {
 
-	/**
-	 * 
-	 */
+	public static final String NAME = "ScoreRender";
 	private static final long serialVersionUID = 4487064539525109005L;
 	private JLabel name;
 	private JLabel score;
 	
-	public ScoreDisplayer(){
+	public ScoreRender(){
 		this.name = new JLabel("Score: ");
 		this.score = new JLabel("0");
 		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));

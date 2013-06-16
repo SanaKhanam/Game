@@ -364,6 +364,10 @@ public class GameEngine {
 	public int getScore() {
 		return this.score;
 	}
+	
+	public Map getMap() {
+		return this.map;
+	}
 
 	
 	

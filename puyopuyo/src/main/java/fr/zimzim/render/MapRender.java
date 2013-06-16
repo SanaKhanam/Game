@@ -11,7 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class RenderEngine extends JComponent implements Observer{
+public class MapRender extends JComponent implements Observer{
 
 	/**
 	 * 
@@ -19,12 +19,12 @@ public class RenderEngine extends JComponent implements Observer{
 	private static final long serialVersionUID = 7196135111434103291L;
 
 	
-
+	public static final String NAME = "MapRender";
 	private Image[] images;
 	private Image cadre;
 	private GameEngine gameEngine;
 
-	public RenderEngine(GameEngine game) {
+	public MapRender(GameEngine game) {
 		this.gameEngine = game;
 		this.setPreferredSize(new Dimension((Settings.TAILLE_PIXELS*Settings.MAP_WIDTH)+(Settings.LEFT_RIM_CADRE*2),
 				(Settings.TAILLE_PIXELS*Settings.MAP_HEIGHT)+(Settings.TOP_RIM_CADRE*2)));

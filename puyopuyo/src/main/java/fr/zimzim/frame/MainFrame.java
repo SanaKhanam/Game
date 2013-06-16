@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.zimzim.render.NextItemDisplayer;
-import fr.zimzim.render.RenderEngine;
-import fr.zimzim.render.ScoreDisplayer;
+import fr.zimzim.render.ItemRender;
+import fr.zimzim.render.MapRender;
+import fr.zimzim.render.ScoreRender;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
 	 * @param itemDisplayer
 	 * @param scoreDisplayer
 	 */
-	public MainFrame(RenderEngine render, NextItemDisplayer itemDisplayer, ScoreDisplayer scoreDisplayer) {
+	public MainFrame(MapRender render, ItemRender itemDisplayer, ScoreRender scoreDisplayer) {
 		super(NAME);
 		this.panel = new JPanel();
 		this.east = new JPanel();

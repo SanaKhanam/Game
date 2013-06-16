@@ -4,9 +4,9 @@ package fr.zimzim.game;
 import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
-import fr.zimzim.render.NextItemDisplayer;
-import fr.zimzim.render.RenderEngine;
-import fr.zimzim.render.ScoreDisplayer;
+import fr.zimzim.render.ItemRender;
+import fr.zimzim.render.MapRender;
+import fr.zimzim.render.ScoreRender;
 import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
@@ -15,11 +15,11 @@ public class PuyoGame implements IGame, Runnable {
 	private static int DIFFICULTY_RANGE = 10;
 	private int delay;
 	private GameEngine engine;
-	private RenderEngine render;
+	private MapRender render;
 	private InputEngine input;
 	private MainFrame frame;
-	private NextItemDisplayer itemDisplayer;
-	private ScoreDisplayer scoreDisplayer;
+	private ItemRender itemDisplayer;
+	private ScoreRender scoreDisplayer;
 	private Thread gameThread;
 	private boolean isRunning;
 	private boolean pause = false;
@@ -28,10 +28,10 @@ public class PuyoGame implements IGame, Runnable {
 	@Override
 	public void init() {
 		this.engine = new GameEngine();
-		this.render = new RenderEngine(engine);
+		this.render = new MapRender(engine);
 		this.input = new InputEngine(engine, this);	
-		this.itemDisplayer = new NextItemDisplayer();
-		this.scoreDisplayer = new ScoreDisplayer();
+		this.itemDisplayer = new ItemRender();
+		this.scoreDisplayer = new ScoreRender();
 		this.engine.addObserver(itemDisplayer);
 		this.engine.addObserver(render);
 		this.engine.addObserver(scoreDisplayer);
