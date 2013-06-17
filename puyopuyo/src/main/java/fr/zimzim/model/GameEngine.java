@@ -198,47 +198,49 @@ public class GameEngine {
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
 			GameItem axe = activeItems.get(0);
+			if(axe.getLine() != -1) {
 
-			// xy
-			//y
-			//x
-			if(axe.getColumn()<item.getColumn() && axe.getLine() > 0){
-				item.setLine(axe.getLine()-1);
-				item.setColumn(axe.getColumn());
-			}
-			// yx
-			//x
-			//y
-			else if(axe.getColumn()>item.getColumn()
-					&& axe.getLine() < Settings.MAP_HEIGHT-1
-					&& map.getCase(axe.getLine()+1, axe.getColumn()).getState() instanceof CaseEmpty){
-				item.setLine(axe.getLine()+1);
-				item.setColumn(axe.getColumn());
-			}
-
-			else if(axe.getColumn()==item.getColumn()){
+				// xy
 				//y
 				//x
-				//yx
-				if(axe.getLine() > item.getLine()
-						&& axe.getColumn() > 0
-						&& map.getCase(axe.getLine(), axe.getColumn()-1).getState() instanceof CaseEmpty) {
-					item.setLine(axe.getLine());
-					item.setColumn(axe.getColumn()-1);
+				if(axe.getColumn()<item.getColumn() && axe.getLine() > 0){
+					item.setLine(axe.getLine()-1);
+					item.setColumn(axe.getColumn());
 				}
+				// yx
 				//x
 				//y
-				//xy
-				else if(axe.getLine() < item.getLine()
-						&& axe.getColumn() < Settings.MAP_WIDTH-1
-						&& map.getCase(axe.getLine(), axe.getColumn()+1).getState() instanceof CaseEmpty){
-					item.setLine(axe.getLine());
-					item.setColumn(axe.getColumn()+1);
+				else if(axe.getColumn()>item.getColumn()
+						&& axe.getLine() < Settings.MAP_HEIGHT-1
+						&& map.getCase(axe.getLine()+1, axe.getColumn()).getState() instanceof CaseEmpty){
+					item.setLine(axe.getLine()+1);
+					item.setColumn(axe.getColumn());
+				}
+
+				else if(axe.getColumn()==item.getColumn()){
+					//y
+					//x
+					//yx
+					if(axe.getLine() > item.getLine()
+							&& axe.getColumn() > 0
+							&& map.getCase(axe.getLine(), axe.getColumn()-1).getState() instanceof CaseEmpty) {
+						item.setLine(axe.getLine());
+						item.setColumn(axe.getColumn()-1);
+					}
+					//x
+					//y
+					//xy
+					else if(axe.getLine() < item.getLine()
+							&& axe.getColumn() < Settings.MAP_WIDTH-1
+							&& map.getCase(axe.getLine(), axe.getColumn()+1).getState() instanceof CaseEmpty){
+						item.setLine(axe.getLine());
+						item.setColumn(axe.getColumn()+1);
+					}
 				}
 			}
+			observable.setChanged();
+			observable.notifyObservers(this);
 		}
-		observable.setChanged();
-		observable.notifyObservers(this);
 
 	}
 
@@ -249,48 +251,49 @@ public class GameEngine {
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
 			GameItem axe = activeItems.get(0);
-
-			// xy
-			//x
-			//y
-			if(axe.getColumn()<item.getColumn()
-					&& axe.getLine() < Settings.MAP_HEIGHT-1
-					&& map.getCase(axe.getLine()+1, axe.getColumn()).getState() instanceof CaseEmpty){
-				item.setLine(axe.getLine()+1);
-				item.setColumn(axe.getColumn());
-			}
-			// yx
-			//y
-			//x
-			else if(axe.getColumn()>item.getColumn()
-					&& axe.getLine() > 0){
-				item.setLine(axe.getLine()-1);
-				item.setColumn(axe.getColumn());
-			}
-
-			else if(axe.getColumn()==item.getColumn()){
-				//y
-				//x
-				//xy
-				if(axe.getLine() > item.getLine()
-						&& axe.getColumn() < Settings.MAP_WIDTH-1
-						&& map.getCase(axe.getLine(), axe.getColumn()+1).getState() instanceof CaseEmpty) {
-					item.setLine(axe.getLine());
-					item.setColumn(axe.getColumn()+1);
-				}
+			if(axe.getLine() != -1) {
+				// xy
 				//x
 				//y
-				//yx
-				else if(axe.getLine() < item.getLine()
-						&& axe.getColumn() > 0
-						&& map.getCase(axe.getLine(), axe.getColumn()-1).getState() instanceof CaseEmpty){
-					item.setLine(axe.getLine());
-					item.setColumn(axe.getColumn()-1);
+				if(axe.getColumn()<item.getColumn()
+						&& axe.getLine() < Settings.MAP_HEIGHT-1
+						&& map.getCase(axe.getLine()+1, axe.getColumn()).getState() instanceof CaseEmpty){
+					item.setLine(axe.getLine()+1);
+					item.setColumn(axe.getColumn());
+				}
+				// yx
+				//y
+				//x
+				else if(axe.getColumn()>item.getColumn()
+						&& axe.getLine() > 0){
+					item.setLine(axe.getLine()-1);
+					item.setColumn(axe.getColumn());
+				}
+
+				else if(axe.getColumn()==item.getColumn()){
+					//y
+					//x
+					//xy
+					if(axe.getLine() > item.getLine()
+							&& axe.getColumn() < Settings.MAP_WIDTH-1
+							&& map.getCase(axe.getLine(), axe.getColumn()+1).getState() instanceof CaseEmpty) {
+						item.setLine(axe.getLine());
+						item.setColumn(axe.getColumn()+1);
+					}
+					//x
+					//y
+					//yx
+					else if(axe.getLine() < item.getLine()
+							&& axe.getColumn() > 0
+							&& map.getCase(axe.getLine(), axe.getColumn()-1).getState() instanceof CaseEmpty){
+						item.setLine(axe.getLine());
+						item.setColumn(axe.getColumn()-1);
+					}
 				}
 			}
+			observable.setChanged();
+			observable.notifyObservers(this);
 		}
-		observable.setChanged();
-		observable.notifyObservers(this);
 
 	}
 
