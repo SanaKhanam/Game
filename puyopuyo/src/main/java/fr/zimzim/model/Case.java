@@ -4,7 +4,11 @@ import fr.zimzim.casestate.CaseEmpty;
 import fr.zimzim.casestate.CaseState;
 import fr.zimzim.meshe.GameItem;
 
-
+/**
+ * Represents an element of the game map. Holds a unique game item
+ * @author Simon Jambu
+ *
+ */
 public class Case {
 	
 	private GameItem item;

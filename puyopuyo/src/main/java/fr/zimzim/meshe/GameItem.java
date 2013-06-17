@@ -1,5 +1,10 @@
 package fr.zimzim.meshe;
 
+/**
+ * Defines all operations that a Game item (Puyos and other possible items) must implement
+ * @author Simon Jambu
+ *
+ */
 public interface GameItem {
 	
 	public int getLine();

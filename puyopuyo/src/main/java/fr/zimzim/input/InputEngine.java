@@ -7,6 +7,11 @@ import fr.zimzim.game.IGame;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.sound.SoundEngine;
 
+/**
+ * This class handle all player's actions
+ * @author Simon Jambu
+ *
+ */
 public class InputEngine implements KeyListener{
 
 	private GameEngine engine;

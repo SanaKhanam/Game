@@ -10,7 +10,7 @@ import fr.zimzim.game.PuyoGame;
  */
 public class GameLauncher {
 
-	/**
+	/**Main method, creates a Puyo Game, initializes it and starts it
 	 * @param args
 	 */
 	public static void main(String[] args) {
