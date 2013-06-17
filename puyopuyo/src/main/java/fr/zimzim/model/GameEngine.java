@@ -15,20 +15,39 @@ import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
 /**
- * 
+ * The GameEngine class defines all logical operations
  * @author Simon Jambu
  *
  */
 public class GameEngine {
 
-
+	/**
+	 * Instance of the game map
+	 * @see Map
+	 */
 	private Map map;
+	
+	/**
+	 * Boolean map used when checking for Puyos combos.
+	 * Used to prevent useless puyos checks
+	 * @see GameEngine#checkMap()
+	 */
 	private boolean[][] hasBeenChecked;
+	
+	/**
+	 * Holds all active game items (items that are currently dropping and can possibly be moved by player)
+	 * @see GameEngine#addActiveItems()
+	 */
 	private List<GameItem> activeItems;
+	
+	/**
+	 * 
+	 */
 	private List<GameItem> nextFallingItem;
 	private Random randomGenerator;
 	private MyObservable observable;
 	private int score;
+	private int combo = 0;
 
 	public GameEngine() {
 		this.map = new Map(Settings.MAP_HEIGHT, Settings.MAP_WIDTH);
@@ -236,16 +255,19 @@ public class GameEngine {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
+						this.combo++;
 						delete(toDelete);
 						this.score+=toDelete.size();
 						SoundEngine.KICK.play();
 						delete = true;
 						refreshMap();
-						checkMap();
+						//checkMap();
 					}
 				}
 			}
 		}
+		System.out.println(combo);
+		this.combo = 0;
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				hasBeenChecked[i][j] = false;
