@@ -169,7 +169,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * Moves active items one game map case left
+	 * Moves active items one game-map case left
 	 */
 	public void moveLeft() {
 		GameItem left = activeItems.get(0);
