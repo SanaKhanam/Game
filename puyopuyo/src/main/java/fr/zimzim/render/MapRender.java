@@ -7,8 +7,6 @@ import fr.zimzim.util.Settings;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
 
 
 public class MapRender extends JComponent implements GraphicComponent{

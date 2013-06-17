@@ -241,6 +241,7 @@ public class GameEngine {
 						SoundEngine.KICK.play();
 						delete = true;
 						refreshMap();
+						checkMap();
 					}
 				}
 			}
