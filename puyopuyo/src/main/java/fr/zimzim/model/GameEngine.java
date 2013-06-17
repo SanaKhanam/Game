@@ -14,6 +14,11 @@ import fr.zimzim.observer.MyObservable;
 import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
+/**
+ * 
+ * @author Simon Jambu
+ *
+ */
 public class GameEngine {
 
 

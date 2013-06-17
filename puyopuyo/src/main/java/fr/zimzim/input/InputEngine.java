@@ -47,6 +47,7 @@ public class InputEngine implements KeyListener{
 			engine.drop();
 			break;
 		case KeyEvent.VK_M:
+			SoundEngine.AMBIANCE.mute();
 			break;
 		case KeyEvent.VK_8:
 			break;

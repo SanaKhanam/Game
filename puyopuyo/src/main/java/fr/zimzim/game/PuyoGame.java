@@ -92,8 +92,8 @@ public class PuyoGame implements IGame, Runnable {
 		this.isRunning = true;
 		this.engine.init();
 		SoundEngine.volume = SoundEngine.Volume.LOW;
-		//SoundEngine.AMBIANCE.play();
-		//SoundEngine.AMBIANCE.setInfiniteLoop();
+		SoundEngine.AMBIANCE.play();
+		SoundEngine.AMBIANCE.setInfiniteLoop();
 		this.gameThread = new Thread(this);
 		this.gameThread.start();
 	}
@@ -105,12 +105,12 @@ public class PuyoGame implements IGame, Runnable {
 	public void pause() {
 		pause = !pause;
 		if(pause) {
-			//SoundEngine.AMBIANCE.pause();
+			SoundEngine.AMBIANCE.pause();
 			SoundEngine.PAUSE.play();
 		}
 		else {
 			SoundEngine.PAUSE.play();
-			//SoundEngine.AMBIANCE.pause();
+			SoundEngine.AMBIANCE.pause();
 			
 		}
 	}
@@ -188,7 +188,7 @@ public class PuyoGame implements IGame, Runnable {
 	 * @see MainFrame#endGame(int)
 	 */
 	public void gameOver() {
-		//SoundEngine.AMBIANCE.pause();
+		SoundEngine.AMBIANCE.pause();
 		SoundEngine.FINISH.play();
 		boolean replay = this.frame.endGame(engine.getScore());
 		
@@ -196,6 +196,8 @@ public class PuyoGame implements IGame, Runnable {
 		else {
 			this.engine.init();
 			this.graphicEngine.clear();
+			SoundEngine.AMBIANCE.play();
+			SoundEngine.AMBIANCE.setInfiniteLoop();
 			this.engine.addActiveItems();
 			this.delay = Settings.INITIAL_DELAY;
 		}

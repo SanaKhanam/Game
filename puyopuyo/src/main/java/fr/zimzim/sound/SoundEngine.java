@@ -61,12 +61,25 @@ public enum SoundEngine{
 	         clip.start();     // Start playing
 	      }
 	   }
+	   
+	   public void mute() {
+		   if (clip.isRunning())
+	            clip.stop();   // Stop the player if it is still running
+		   		
+		   else{
+			   	
+	        	 clip.start();
+	        	 clip.loop(Clip.LOOP_CONTINUOUSLY);// Start playing
+	         }
+	   }
+	   
 	   public void pause() {
 		      if (volume != Volume.MUTE) {
-		         if (clip.isRunning())
+		         if (clip.isRunning()){
 		            clip.stop();   // Stop the player if it is still running
-		         // rewind to the beginning
-		         else{
+		            volume = Volume.MUTE;
+		         } else{
+		        	 volume = Volume.LOW;
 		        	 clip.start();
 		        	 clip.loop(Clip.LOOP_CONTINUOUSLY);// Start playing
 		         }
