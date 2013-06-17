@@ -4,6 +4,7 @@ package fr.zimzim.game;
 import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
+import fr.zimzim.render.GraphicEngine;
 import fr.zimzim.render.ItemRender;
 import fr.zimzim.render.MapRender;
 import fr.zimzim.render.ScoreRender;
@@ -23,19 +24,16 @@ public class PuyoGame implements IGame, Runnable {
 	private Thread gameThread;
 	private boolean isRunning;
 	private boolean pause = false;
+	private GraphicEngine graphicEngine;
 
 
 	@Override
 	public void init() {
 		this.engine = new GameEngine();
-		this.render = new MapRender(engine);
 		this.input = new InputEngine(engine, this);	
-		this.itemDisplayer = new ItemRender();
-		this.scoreDisplayer = new ScoreRender();
-		this.engine.addObserver(itemDisplayer);
-		this.engine.addObserver(render);
-		this.engine.addObserver(scoreDisplayer);
-		this.frame = new MainFrame(render, itemDisplayer, scoreDisplayer);
+		this.graphicEngine = new GraphicEngine(this.engine);
+		this.engine.addObserver(graphicEngine);
+		this.frame = new MainFrame(graphicEngine);
 		this.delay = Settings.INITIAL_DELAY;
 
 		frame.addKeyListener(input);
@@ -127,7 +125,7 @@ public class PuyoGame implements IGame, Runnable {
 		if(!replay) stop();
 		else {
 			this.engine.init();
-			this.scoreDisplayer.clear();
+			this.graphicEngine.clear();
 			this.engine.addActiveItems();
 			this.delay = Settings.INITIAL_DELAY;
 		}

@@ -1,12 +1,14 @@
 package fr.zimzim.frame;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import fr.zimzim.render.GraphicEngine;
 import fr.zimzim.render.ItemRender;
 import fr.zimzim.render.MapRender;
 import fr.zimzim.render.ScoreRender;
@@ -32,16 +34,16 @@ public class MainFrame extends JFrame {
 	 * @param itemDisplayer
 	 * @param scoreDisplayer
 	 */
-	public MainFrame(MapRender render, ItemRender itemDisplayer, ScoreRender scoreDisplayer) {
+	public MainFrame(GraphicEngine engine) {
 		super(NAME);
 		this.panel = new JPanel();
 		this.east = new JPanel();
 		this.panel.setLayout(new BorderLayout());
 		this.east.setLayout(new BoxLayout(this.east,BoxLayout.PAGE_AXIS));
 		
-		this.east.add(itemDisplayer);
-		this.east.add(scoreDisplayer);
-		this.panel.add(render, BorderLayout.CENTER);
+		this.east.add((Component) engine.getComponent(ItemRender.NAME));
+		this.east.add((Component) engine.getComponent(ScoreRender.NAME));
+		this.panel.add((Component) engine.getComponent(MapRender.NAME), BorderLayout.CENTER);
 		this.panel.add(this.east, BorderLayout.EAST);
 		this.setContentPane(panel);
 		

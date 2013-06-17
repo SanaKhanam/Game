@@ -11,7 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class MapRender extends JComponent implements Observer{
+public class MapRender extends JComponent implements GraphicComponent{
 
 	/**
 	 * 
@@ -64,9 +64,14 @@ public class MapRender extends JComponent implements Observer{
 
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
+	public void update() {
 		repaint();
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

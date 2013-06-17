@@ -14,16 +14,18 @@ import fr.zimzim.meshe.GameItem;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.util.Settings;
 
-public class ItemRender extends JComponent implements Observer{
+public class ItemRender extends JComponent implements GraphicComponent{
 	
 	public static final String NAME = "NextItem";
 	private List<GameItem> items;
 	private Image[] images;
 	private Image cadre;
+	private GameEngine engine;
 	private static final long serialVersionUID = 7326520990733045489L;
 	
-	public ItemRender() {
+	public ItemRender(GameEngine engine) {
 		this.items = new ArrayList<GameItem>();
+		this.engine = engine;
 		this.cadre = getToolkit().getImage(this.getClass().getResource(Settings.IMG_SMALL_CADRE));
 		this.images = new Image[4];
         this.images[Settings.PUYO_GREEN] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_GREEN));
@@ -52,11 +54,16 @@ public class ItemRender extends JComponent implements Observer{
 		
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update() {
 		this.items.clear();
-		this.items.addAll(((GameEngine) arg1).getNextItems());	
+		this.items.addAll(engine.getNextItems());	
 		repaint();
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
