@@ -7,6 +7,11 @@ import javax.swing.JPanel;
 
 import fr.zimzim.model.GameEngine;
 
+/**
+ * 
+ * @author Simon Jambu
+ *
+ */
 public class ScoreRender extends JPanel implements GraphicComponent {
 
 	public static final String NAME = "ScoreRender";
