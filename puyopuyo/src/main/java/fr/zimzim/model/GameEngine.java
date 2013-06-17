@@ -26,42 +26,42 @@ public class GameEngine {
 	 * @see Map
 	 */
 	private Map map;
-	
+
 	/**
 	 * Boolean map used when checking for Puyos combos.
 	 * Used to prevent useless puyos checks
 	 * @see GameEngine#checkMap()
 	 */
 	private boolean[][] hasBeenChecked;
-	
+
 	/**
 	 * Holds all active game items (items that are currently dropping and can possibly be moved by player)
 	 * @see GameEngine#addActiveItems()
 	 */
 	private List<GameItem> activeItems;
-	
+
 	/**
 	 * Holds the next active game items. Displayed on the screen for player
 	 * @see ItemRender
 	 */
 	private List<GameItem> nextActiveItem;
-	
+
 	/**
 	 * Used for generating new items randomly
 	 * @see GameEngine#addActiveItems()
 	 */
 	private Random randomGenerator;
-	
+
 	/**
 	 * Used to notify observers (Design pattern Observer)
 	 */
 	private MyObservable observable;
-	
+
 	/**
 	 * Current score of the player
 	 */
 	private int score;
-	
+
 	/**
 	 * Combo coefficient multiplicator
 	 */
@@ -79,7 +79,7 @@ public class GameEngine {
 		this.randomGenerator = new Random();
 		this.observable = new MyObservable();
 	}
-	
+
 	/**
 	 * Initializes all datas
 	 */
@@ -94,7 +94,7 @@ public class GameEngine {
 		observable.setChanged();
 		observable.notifyObservers(this);
 	}
-	
+
 	/**
 	 * Create new active game items
 	 * @return true when creation done
@@ -144,7 +144,7 @@ public class GameEngine {
 		observable.notifyObservers(this);
 		return hit;
 	}
-	
+
 	/**
 	 * Moves active items one game map case right
 	 */
@@ -167,7 +167,7 @@ public class GameEngine {
 		}
 
 	}
-	
+
 	/**
 	 * Moves active items one game map case left
 	 */
@@ -188,9 +188,9 @@ public class GameEngine {
 				observable.notifyObservers(this);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Rotate active items (axe is left item) one step left
 	 */
@@ -241,7 +241,7 @@ public class GameEngine {
 		observable.notifyObservers(this);
 
 	}
-	
+
 	/**
 	 * Rotate active items (axe is left item) one step right
 	 */
@@ -293,7 +293,7 @@ public class GameEngine {
 		observable.notifyObservers(this);
 
 	}
-	
+
 	/**
 	 * Checks for puyos combos
 	 * @return true if at least one combo found
@@ -324,7 +324,7 @@ public class GameEngine {
 		}
 		return delete;
 	}
-	
+
 	/**
 	 * Refresh game map when linked puyos are deleted
 	 */
@@ -348,7 +348,7 @@ public class GameEngine {
 		}
 
 	}
-	
+
 	/**
 	 * Delete linked puyos
 	 * @param toDelete: Puyos to delete from the game map
@@ -360,7 +360,7 @@ public class GameEngine {
 			c.setItem(null);
 		}
 	}
-	
+
 	/**
 	 * Recursive method to get linked puyos
 	 * @param c: the current puyo's case
@@ -384,7 +384,7 @@ public class GameEngine {
 		}
 		return toKick;
 	}
-	
+
 	/**
 	 * Build a list of same types puyos right around case c
 	 * @param c: the current map case
@@ -410,7 +410,7 @@ public class GameEngine {
 		}
 		return candidates;
 	}
-	
+
 	/**
 	 * Makes active items drop (a reverse of the list is done if one is under another)
 	 */
@@ -427,7 +427,7 @@ public class GameEngine {
 				activeItems.add(tmp.get(i));
 			}
 		}
-			
+
 		for(int j=0; j<activeItems.size(); j++) {
 			GameItem other = activeItems.get(j);
 			int line = other.getLine();
@@ -435,12 +435,14 @@ public class GameEngine {
 			while(line+1 < Settings.MAP_HEIGHT && map.getCase(line+1, other.getColumn()).getState() instanceof CaseEmpty) {
 				line++;
 			}
-			other.setLine(line);
-			map.getCase(other.getLine(), other.getColumn()).setState(CaseBusy.getInstance());
-			map.getCase(other.getLine(), other.getColumn()).setItem(other);
+			if(line != -1) {
+				other.setLine(line);
+				map.getCase(other.getLine(), other.getColumn()).setState(CaseBusy.getInstance());
+				map.getCase(other.getLine(), other.getColumn()).setItem(other);
+			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return Game map dimension
@@ -448,7 +450,7 @@ public class GameEngine {
 	public Dimension getMapDimension() {
 		return new Dimension(Settings.MAP_WIDTH,Settings.MAP_HEIGHT);
 	}
-	
+
 	/**
 	 * Returns the map case in [i][j] 
 	 * @param i: The line
@@ -458,7 +460,7 @@ public class GameEngine {
 	public Case getCase(int i, int j) {
 		return this.map.getCase(i, j);
 	}
-	
+
 	/**
 	 * 
 	 * @return current active game items
@@ -466,7 +468,7 @@ public class GameEngine {
 	public List<GameItem> getActiveItems(){
 		return this.activeItems;
 	}
-	
+
 	/**
 	 * 
 	 * @return current next active game items
@@ -474,7 +476,7 @@ public class GameEngine {
 	public List<GameItem> getNextItems(){
 		return this.nextActiveItem;
 	}
-	
+
 	/**
 	 * Adds a new observer
 	 * @param o: The observer
@@ -482,7 +484,7 @@ public class GameEngine {
 	public void addObserver(Observer o) {
 		this.observable.addObserver(o);
 	}
-	
+
 	/**
 	 * 
 	 * @return current player score
@@ -490,7 +492,7 @@ public class GameEngine {
 	public int getScore() {
 		return this.score;
 	}
-	
+
 	/**
 	 * 
 	 * @return the game map
@@ -499,6 +501,6 @@ public class GameEngine {
 		return this.map;
 	}
 
-	
-	
+
+
 }
