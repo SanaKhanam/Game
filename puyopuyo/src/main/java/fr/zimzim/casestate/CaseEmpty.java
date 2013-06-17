@@ -7,8 +7,15 @@ package fr.zimzim.casestate;
  */
 public class CaseEmpty implements CaseState {
 	
+	/**
+	 * Static instance
+	 */
 	private static final CaseState instance = new CaseEmpty();
 	
+	/**
+	 * 
+	 * @return class instance
+	 */
 	public static CaseState getInstance() {
 		return instance;
 	}

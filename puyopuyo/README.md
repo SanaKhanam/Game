@@ -23,3 +23,4 @@ Possible key actions:
 
 Project build with Maven.
 All classes and methods are commented. Please see the JavaDoc.
+All arts (images & sounds) created by myself

@@ -41,49 +41,83 @@ public class GameEngine {
 	private List<GameItem> activeItems;
 	
 	/**
-	 * 
+	 * Holds the next active game items. Displayed on the screen for player
+	 * @see ItemRender
 	 */
-	private List<GameItem> nextFallingItem;
+	private List<GameItem> nextActiveItem;
+	
+	/**
+	 * Used for generating new items randomly
+	 * @see GameEngine#addActiveItems()
+	 */
 	private Random randomGenerator;
+	
+	/**
+	 * Used to notify observers (Design pattern Observer)
+	 */
 	private MyObservable observable;
+	
+	/**
+	 * Current score of the player
+	 */
 	private int score;
+	
+	/**
+	 * Combo coefficient multiplicator
+	 */
 	private int combo = 0;
 
+	/**
+	 * Constructor of the GameEngine
+	 * Creates all useful datas.
+	 */
 	public GameEngine() {
 		this.map = new Map(Settings.MAP_HEIGHT, Settings.MAP_WIDTH);
 		this.hasBeenChecked = new boolean[Settings.MAP_HEIGHT][Settings.MAP_WIDTH];
 		this.activeItems = new ArrayList<GameItem>();
-		this.nextFallingItem = new ArrayList<GameItem>();
+		this.nextActiveItem = new ArrayList<GameItem>();
 		this.randomGenerator = new Random();
 		this.observable = new MyObservable();
 	}
 	
+	/**
+	 * Initializes all datas
+	 */
 	public void init() {
 		this.activeItems.clear();
 		this.score = 0;
 		this.map.clear();
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
 			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
-			nextFallingItem.add(item);
+			nextActiveItem.add(item);
 		}
 		observable.setChanged();
 		observable.notifyObservers(this);
 	}
+	
+	/**
+	 * Create new active game items
+	 * @return true when creation done
+	 */
 	public boolean addActiveItems() {
-		activeItems.addAll(nextFallingItem);
-		nextFallingItem.clear();
+		activeItems.addAll(nextActiveItem);
+		nextActiveItem.clear();
 		for(int i=0; i<Settings.MAP_WIDTH; i++) {
 			if(map.getCase(0, i).getState() instanceof CaseBusy) return false;
 		}
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
 			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
-			nextFallingItem.add(item);
+			nextActiveItem.add(item);
 		}
 		observable.setChanged();
 		observable.notifyObservers(this);
 		return true;
 	}
 
+	/**
+	 * Proceeds to one step drop of active items
+	 * @return true when one item reach an other item and all the others are dropped
+	 */
 	public boolean fall() {
 		boolean hit = false;
 		GameItem tmp = null;
@@ -110,7 +144,10 @@ public class GameEngine {
 		observable.notifyObservers(this);
 		return hit;
 	}
-
+	
+	/**
+	 * Moves active items one game map case right
+	 */
 	public void moveRight() {
 		GameItem right = activeItems.get(0);
 		for(int i=1; i<activeItems.size(); i++) {
@@ -130,7 +167,10 @@ public class GameEngine {
 		}
 
 	}
-
+	
+	/**
+	 * Moves active items one game map case left
+	 */
 	public void moveLeft() {
 		GameItem left = activeItems.get(0);
 		for(int i=1; i<activeItems.size(); i++) {
@@ -150,7 +190,10 @@ public class GameEngine {
 		}
 		
 	}
-
+	
+	/**
+	 * Rotate active items (axe is left item) one step left
+	 */
 	public void rotateLeft(){
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
@@ -198,7 +241,10 @@ public class GameEngine {
 		observable.notifyObservers(this);
 
 	}
-
+	
+	/**
+	 * Rotate active items (axe is left item) one step right
+	 */
 	public void rotateRight() {
 		if(activeItems.size() > 1) {
 			GameItem item = activeItems.get(activeItems.size()-1);
@@ -247,7 +293,11 @@ public class GameEngine {
 		observable.notifyObservers(this);
 
 	}
-
+	
+	/**
+	 * Checks for puyos combos
+	 * @return true if at least one combo found
+	 */
 	public boolean checkMap() {
 		boolean delete = false;
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
@@ -266,7 +316,6 @@ public class GameEngine {
 				}
 			}
 		}
-		System.out.println(combo);
 		this.combo = 0;
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
@@ -275,7 +324,10 @@ public class GameEngine {
 		}
 		return delete;
 	}
-
+	
+	/**
+	 * Refresh game map when linked puyos are deleted
+	 */
 	private void refreshMap() {
 		for(int i=Settings.MAP_HEIGHT-1; i>0; i--) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
@@ -296,7 +348,11 @@ public class GameEngine {
 		}
 
 	}
-
+	
+	/**
+	 * Delete linked puyos
+	 * @param toDelete: Puyos to delete from the game map
+	 */
 	private void delete(List<Case> toDelete) {
 		for(int i=0; i<toDelete.size(); i++) {
 			Case c = toDelete.get(i);
@@ -304,7 +360,13 @@ public class GameEngine {
 			c.setItem(null);
 		}
 	}
-
+	
+	/**
+	 * Recursive method to get linked puyos
+	 * @param c: the current puyo's case
+	 * @param toKick: the current cases to delete
+	 * @return
+	 */
 	private List<Case> getCaseToDelete(Case c, List<Case> toKick) {
 		List<Case> successors = getSuccessors(c, toKick);
 		if(!toKick.contains(c)) toKick.add(c);
@@ -322,7 +384,13 @@ public class GameEngine {
 		}
 		return toKick;
 	}
-
+	
+	/**
+	 * Build a list of same types puyos right around case c
+	 * @param c: the current map case
+	 * @param l: possible successors
+	 * @return candidates: same types puyos right around case c
+	 */
 	private List<Case> getSuccessors(Case c, List<Case> l) {
 		List<Case> result = new ArrayList<Case>();
 		int line = c.getLine();
@@ -343,6 +411,9 @@ public class GameEngine {
 		return candidates;
 	}
 	
+	/**
+	 * Makes active items drop (a reverse of the list is done if one is under another)
+	 */
 	public void drop() {
 		boolean reverse = false;
 		for(int i=0; i<activeItems.size()-1; i++){
@@ -369,31 +440,61 @@ public class GameEngine {
 			map.getCase(other.getLine(), other.getColumn()).setItem(other);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @return Game map dimension
+	 */
 	public Dimension getMapDimension() {
 		return new Dimension(Settings.MAP_WIDTH,Settings.MAP_HEIGHT);
 	}
-
+	
+	/**
+	 * Returns the map case in [i][j] 
+	 * @param i: The line
+	 * @param j: The column
+	 * @return the case in [i][j]
+	 */
 	public Case getCase(int i, int j) {
 		return this.map.getCase(i, j);
 	}
-
+	
+	/**
+	 * 
+	 * @return current active game items
+	 */
 	public List<GameItem> getActiveItems(){
 		return this.activeItems;
 	}
 	
+	/**
+	 * 
+	 * @return current next active game items
+	 */
 	public List<GameItem> getNextItems(){
-		return this.nextFallingItem;
+		return this.nextActiveItem;
 	}
 	
+	/**
+	 * Adds a new observer
+	 * @param o: The observer
+	 */
 	public void addObserver(Observer o) {
 		this.observable.addObserver(o);
 	}
-
+	
+	/**
+	 * 
+	 * @return current player score
+	 */
 	public int getScore() {
 		return this.score;
 	}
 	
+	/**
+	 * 
+	 * @return the game map
+	 */
 	public Map getMap() {
 		return this.map;
 	}
