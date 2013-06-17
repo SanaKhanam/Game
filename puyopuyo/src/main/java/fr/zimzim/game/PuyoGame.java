@@ -5,42 +5,87 @@ import fr.zimzim.frame.MainFrame;
 import fr.zimzim.input.InputEngine;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.render.GraphicEngine;
-import fr.zimzim.render.ItemRender;
-import fr.zimzim.render.MapRender;
-import fr.zimzim.render.ScoreRender;
 import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
+/**
+ * Game controler, holds all engines and define the main loop of the game
+ * 
+ * @author Simon Jambu
+ *
+ */
 public class PuyoGame implements IGame, Runnable {
 	
+	/**
+	 * Difficulty range that represents the percentage of difficulty to add
+	 * @see PuyoGame#increaseDifficulty()
+	 */
 	private static int DIFFICULTY_RANGE = 10;
+	
+	/**
+	 * Thread waiting delay before adding new Puyos on the map
+	 * Decreases if difficulty increase
+	 * @see PuyoGame#sleep(int)
+	 */
 	private int delay;
-	private GameEngine engine;
-	private MapRender render;
-	private InputEngine input;
-	private MainFrame frame;
-	private ItemRender itemDisplayer;
-	private ScoreRender scoreDisplayer;
-	private Thread gameThread;
-	private boolean isRunning;
-	private boolean pause = false;
+	
+	/**
+	 * Instance of the GraphicEngine (holds all graphic subcomponents)
+	 */
 	private GraphicEngine graphicEngine;
+	
+	/**
+	 * Instance of the GameEngine (holds all the logic of the game)
+	 */
+	private GameEngine engine;
+	
+	/**
+	 * Instance of the InputEngine (handle all key events)
+	 */
+	private InputEngine input;
+	
+	/**
+	 * Instance of the main frame of the game (holds graphic components)
+	 */
+	private MainFrame frame;
+	
+	/**
+	 * Game thread
+	 * @see PuyoGame#run()
+	 */
+	private Thread gameThread;
+	
+	/**
+	 * End condition of the game loop
+	 */
+	private boolean isRunning;
+	
+	/**
+	 * The game loop does nothing if <code>pause</code> is true (the frame freezes)
+	 */
+	private boolean pause = false;
 
-
+	
+	/**
+	 * Initialization of the game components
+	 */
 	@Override
 	public void init() {
 		this.engine = new GameEngine();
-		this.input = new InputEngine(engine, this);	
+		this.input = new InputEngine(this.engine, this);	
 		this.graphicEngine = new GraphicEngine(this.engine);
-		this.engine.addObserver(graphicEngine);
-		this.frame = new MainFrame(graphicEngine);
+		this.engine.addObserver(this.graphicEngine);
+		this.frame = new MainFrame(this.graphicEngine);
 		this.delay = Settings.INITIAL_DELAY;
 
-		frame.addKeyListener(input);
+		this.frame.addKeyListener(input);
 
 
 	}
-
+	
+	/**
+	 * Starts the game (create a new Thread)
+	 */
 	@Override
 	public void start() {
 		this.frame.setVisible(true);
@@ -52,7 +97,10 @@ public class PuyoGame implements IGame, Runnable {
 		this.gameThread = new Thread(this);
 		this.gameThread.start();
 	}
-
+	
+	/**
+	 * Pause the game
+	 */
 	@Override
 	public void pause() {
 		pause = !pause;
@@ -66,24 +114,35 @@ public class PuyoGame implements IGame, Runnable {
 			
 		}
 	}
-
+	
+	/**
+	 * Instructions when the game resumes (nothing for PuyoGame)
+	 */
 	@Override
-	public void resume() {
-	}
-
+	public void resume() {}
+	
+	/**
+	 * Stops the game loop and causes game thread termination
+	 */
 	@Override
 	public void stop() {
 		this.isRunning = false;
 
 	}
-
+	
+	/**
+	 * Kills the main frame and stops the program
+	 */
 	@Override
 	public void exit() {
 		this.frame.dispose();
 		System.exit(0);
 
 	}
-
+	
+	/**
+	 * Game loop
+	 */
 	@Override
 	public void run() {
 		engine.addActiveItems();
@@ -101,13 +160,20 @@ public class PuyoGame implements IGame, Runnable {
 		exit();
 	}
 	
+	/**
+	 * Increases difficulty of the game (lower thread delay)
+	 */
 	private void increaseDifficulty() {
 		int value = (this.delay*DIFFICULTY_RANGE)/100;
 		this.delay = this.delay-value;
-		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/**
+	 * Make the game sleep before adding new items on the map
+	 * @param time
+	 * 			Sleeping time
+	 */
 	@SuppressWarnings("static-access")
 	public void sleep(int time) {
 		try {
@@ -117,6 +183,10 @@ public class PuyoGame implements IGame, Runnable {
 		}
 	}
 	
+	/**
+	 * Call the game-over frame and ask the player to replay
+	 * @see MainFrame#endGame(int)
+	 */
 	public void gameOver() {
 		//SoundEngine.AMBIANCE.pause();
 		SoundEngine.FINISH.play();

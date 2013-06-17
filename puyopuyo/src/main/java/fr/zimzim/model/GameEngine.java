@@ -36,6 +36,7 @@ public class GameEngine {
 	
 	public void init() {
 		this.activeItems.clear();
+		this.score = 0;
 		this.map.clear();
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
 			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));

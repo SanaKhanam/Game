@@ -21,10 +21,7 @@ import fr.zimzim.render.ScoreRender;
 
 public class MainFrame extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7700792796798152332L;
+		private static final long serialVersionUID = -7700792796798152332L;
 	private JPanel panel, east;
 	private static final String NAME = "Puyo Game";
 	
@@ -54,6 +51,11 @@ public class MainFrame extends JFrame {
 
 	}
 	
+	/**
+	 * Displays a Dialog frame when the game is over.
+	 * @param score: High score
+	 * @return
+	 */
 	public boolean endGame(int score) {
 		int n = JOptionPane.showConfirmDialog(
 			    this,

@@ -1,5 +1,10 @@
 package fr.zimzim.game;
 
+/**
+ * Define operations that all game must implement.
+ * @author Simon Jambu
+ *
+ */
 public interface IGame {
 	
 	public void init();
