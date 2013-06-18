@@ -146,7 +146,7 @@ public class PuyoGame implements IGame, Runnable {
 	public void run() {
 		engine.addActiveItems();
 		while(isRunning) {
-            System.out.println("Game paused "+pause);
+            //System.out.println("Game paused "+pause);
             if(!pause) {
                 sleep(delay);
                 if(engine.fall()) {
