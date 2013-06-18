@@ -8,11 +8,11 @@ PuyoPuyo
 This is a simple PuyoGame.
 The goal of this game is to link puyos of the same color to increase your score (4+).
 Possible key actions:
-	-Left arrow: moves one step left current falling puyos.
-	-Right arrow: moves one step right current falling puyos.
-	-Q: proceed to a rotation on the left side.
-	-D: proceed to a rotation on the right side.
-	-Space bar: drop current falling puyos.
+	-Left arrow: left shift
+	-Right arrow: right shift
+	-Q: left rotation
+	-D: right rotation
+	-Space bar: drop current puyos.
 	-M: mute sound.
 	-Escape: pause the game.
 	
@@ -23,4 +23,4 @@ Possible key actions:
 
 Project build with Maven.
 All classes and methods are commented. Please see the JavaDoc.
-All arts (images & sounds) created by myself
+All arts (images & sounds) are created by myself

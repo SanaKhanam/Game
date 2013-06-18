@@ -13,7 +13,7 @@ public class GraphicEngine implements Observer{
 	private Map<String,GraphicComponent> graphics;
 	
 	public GraphicEngine(GameEngine engine){
-		this.graphics = new Hashtable<String,GraphicComponent>();
+		this.graphics = new Hashtable<String, GraphicComponent>();
 		this.graphics.put(MapRender.NAME, new MapRender(engine));
 		this.graphics.put(ItemRender.NAME, new ItemRender(engine));
 		this.graphics.put(ScoreRender.NAME, new ScoreRender(engine));
