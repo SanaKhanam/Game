@@ -8,6 +8,8 @@ import fr.zimzim.render.GraphicEngine;
 import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
+import javax.swing.*;
+
 /**
  * Game controler, holds all engines and define the main loop of the game
  * 
@@ -79,8 +81,6 @@ public class PuyoGame implements IGame, Runnable {
 		this.delay = Settings.INITIAL_DELAY;
 
 		this.frame.addKeyListener(input);
-
-
 	}
 	
 	/**
@@ -103,15 +103,14 @@ public class PuyoGame implements IGame, Runnable {
 	 */
 	@Override
 	public void pause() {
-		pause = !pause;
+        pause = !pause;
 		if(pause) {
 			SoundEngine.AMBIANCE.pause();
 			SoundEngine.PAUSE.play();
-		}
-		else {
+
+		} else {
 			SoundEngine.PAUSE.play();
 			SoundEngine.AMBIANCE.pause();
-			
 		}
 	}
 	
@@ -147,9 +146,10 @@ public class PuyoGame implements IGame, Runnable {
 	public void run() {
 		engine.addActiveItems();
 		while(isRunning) {
-			if(!pause) {
-				sleep(delay);
-				if(engine.fall()) {
+            System.out.println("Game paused "+pause);
+            if(!pause) {
+                sleep(delay);
+                if(engine.fall()) {
 					if(engine.checkMap()) increaseDifficulty();
 					if(!engine.addActiveItems()){
 						gameOver();

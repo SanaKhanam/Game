@@ -24,13 +24,13 @@ public class InputEngine implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent input) {
-		switch(input.getKeyCode()) {
+        switch(input.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			engine.moveLeft();
 			break;
 		case KeyEvent.VK_RIGHT:
 			engine.moveRight();
-			
+
 			break;
 		case KeyEvent.VK_Q:
 			SoundEngine.FLIP.play();
