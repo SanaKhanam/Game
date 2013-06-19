@@ -1,7 +1,7 @@
 package fr.zimzim.render;
 
 /**
- * 
+ * Generic type of a graphical component
  * @author Simon Jambu
  *
  */

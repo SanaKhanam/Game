@@ -8,8 +8,6 @@ import fr.zimzim.render.GraphicEngine;
 import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
-import javax.swing.*;
-
 /**
  * Game controler, holds all engines and define the main loop of the game
  * 
@@ -17,57 +15,57 @@ import javax.swing.*;
  *
  */
 public class PuyoGame implements IGame, Runnable {
-	
+
 	/**
 	 * Difficulty range that represents the percentage of difficulty to add
 	 * @see PuyoGame#increaseDifficulty()
 	 */
 	private static int DIFFICULTY_RANGE = 10;
-	
+
 	/**
 	 * Thread waiting delay before adding new Puyos on the map
 	 * Decreases if difficulty increase
 	 * @see PuyoGame#sleep(int)
 	 */
 	private int delay;
-	
+
 	/**
 	 * Instance of the GraphicEngine (holds all graphic subcomponents)
 	 */
 	private GraphicEngine graphicEngine;
-	
+
 	/**
 	 * Instance of the GameEngine (holds all the logic of the game)
 	 */
 	private GameEngine engine;
-	
+
 	/**
 	 * Instance of the InputEngine (handle all key events)
 	 */
 	private InputEngine input;
-	
+
 	/**
 	 * Instance of the main frame of the game (holds graphic components)
 	 */
 	private MainFrame frame;
-	
+
 	/**
 	 * Game thread
 	 * @see PuyoGame#run()
 	 */
 	private Thread gameThread;
-	
+
 	/**
 	 * End condition of the game loop
 	 */
 	private boolean isRunning;
-	
+
 	/**
 	 * The game loop does nothing if <code>pause</code> is true (the frame freezes)
 	 */
 	private boolean pause = false;
 
-	
+
 	/**
 	 * Initialization of the game components
 	 */
@@ -82,7 +80,7 @@ public class PuyoGame implements IGame, Runnable {
 
 		this.frame.addKeyListener(input);
 	}
-	
+
 	/**
 	 * Starts the game (create a new Thread)
 	 */
@@ -97,29 +95,28 @@ public class PuyoGame implements IGame, Runnable {
 		this.gameThread = new Thread(this);
 		this.gameThread.start();
 	}
-	
+
 	/**
 	 * Pause the game
 	 */
 	@Override
 	public void pause() {
-        pause = !pause;
-		if(pause) {
-			SoundEngine.AMBIANCE.pause();
-			SoundEngine.PAUSE.play();
+		pause = !pause;
+		SoundEngine.AMBIANCE.pause();
+		SoundEngine.PAUSE.play();
 
-		} else {
-			SoundEngine.PAUSE.play();
-			SoundEngine.AMBIANCE.pause();
-		}
 	}
-	
+
 	/**
-	 * Instructions when the game resumes (nothing for PuyoGame)
+	 * Instructions when the game resumes
 	 */
 	@Override
-	public void resume() {}
-	
+	public void resume() {
+		SoundEngine.PAUSE.play();
+		SoundEngine.AMBIANCE.pause();
+		pause = !pause;
+	}
+
 	/**
 	 * Stops the game loop and causes game thread termination
 	 */
@@ -128,7 +125,7 @@ public class PuyoGame implements IGame, Runnable {
 		this.isRunning = false;
 
 	}
-	
+
 	/**
 	 * Kills the main frame and stops the program
 	 */
@@ -138,7 +135,7 @@ public class PuyoGame implements IGame, Runnable {
 		System.exit(0);
 
 	}
-	
+
 	/**
 	 * Game loop
 	 */
@@ -146,10 +143,10 @@ public class PuyoGame implements IGame, Runnable {
 	public void run() {
 		engine.addActiveItems();
 		while(isRunning) {
-            //System.out.println("Game paused "+pause);
-            if(!pause) {
-                sleep(delay);
-                if(engine.fall()) {
+			//System.out.println("Game paused "+pause);
+			if(!pause) {
+				sleep(delay);
+				if(engine.fall()) {
 					if(engine.checkMap()) increaseDifficulty();
 					if(!engine.addActiveItems()){
 						gameOver();
@@ -159,16 +156,16 @@ public class PuyoGame implements IGame, Runnable {
 		}
 		exit();
 	}
-	
+
 	/**
 	 * Increases difficulty of the game (lower thread delay)
 	 */
 	private void increaseDifficulty() {
 		int value = (this.delay*DIFFICULTY_RANGE)/100;
 		this.delay = this.delay-value;
-		
+
 	}
-	
+
 	/**
 	 * Make the game sleep before adding new items on the map
 	 * @param time
@@ -182,7 +179,7 @@ public class PuyoGame implements IGame, Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Call the game-over frame and ask the player to replay
 	 * @see MainFrame#endGame(int)
@@ -191,7 +188,7 @@ public class PuyoGame implements IGame, Runnable {
 		SoundEngine.AMBIANCE.pause();
 		SoundEngine.FINISH.play();
 		boolean replay = this.frame.endGame(engine.getScore());
-		
+
 		if(!replay) stop();
 		else {
 			this.engine.init();

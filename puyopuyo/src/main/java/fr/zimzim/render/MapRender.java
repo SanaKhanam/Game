@@ -8,20 +8,43 @@ import fr.zimzim.util.Settings;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * GraphicComponent in charge of displaying the game map
+ * @see Map
+ * @author Simon Jambu
+ *
+ */
 public class MapRender extends JComponent implements GraphicComponent{
 
 	/**
-	 * 
+	 * Auto generated serial
 	 */
 	private static final long serialVersionUID = 7196135111434103291L;
 
-	
+	/**
+	 * Component name
+	 */
 	public static final String NAME = "MapRender";
+	
+	/**
+	 * Component images
+	 */
 	private Image[] images;
+	
+	/**
+	 * Frame image
+	 */
 	private Image cadre;
+	
+	/**
+	 * Instance of game engine
+	 */
 	private GameEngine gameEngine;
-
+	
+	/**
+	 * Constructor. Initializes the component
+	 * @param game: Instance of the game engine
+	 */
 	public MapRender(GameEngine game) {
 		this.gameEngine = game;
 		this.setPreferredSize(new Dimension((Settings.TAILLE_PIXELS*Settings.MAP_WIDTH)+(Settings.LEFT_RIM_CADRE*2),
@@ -34,9 +57,13 @@ public class MapRender extends JComponent implements GraphicComponent{
         this.images[Settings.PUYO_BLUE] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_BLUE));
 		repaint();
 	}
-
+	
+	/**
+	 * Draws game-map
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
+		//Draw the game map
 		g.drawImage(this.cadre,
 				0,
 				0,
@@ -51,6 +78,7 @@ public class MapRender extends JComponent implements GraphicComponent{
 			}
 		}
 		
+		//Draw active items
 		for(int i=0; i<this.gameEngine.getActiveItems().size(); i++) {
 			GameItem item = gameEngine.getActiveItems().get(i);
 			if(item.getLine() !=-1)
@@ -61,15 +89,18 @@ public class MapRender extends JComponent implements GraphicComponent{
 		}
 
 	}
-
+	
+	/**
+	 * Update the component
+	 */
 	public void update() {
 		repaint();
 	}
-
+	
+	/**
+	 * Resets useful datas
+	 */
 	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void clear() {}
 
 }

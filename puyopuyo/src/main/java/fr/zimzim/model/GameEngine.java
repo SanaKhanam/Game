@@ -63,11 +63,6 @@ public class GameEngine {
 	private int score;
 
 	/**
-	 * Combo coefficient multiplicator
-	 */
-	private int combo = 0;
-
-	/**
 	 * Constructor of the GameEngine
 	 * Creates all useful datas.
 	 */
@@ -308,7 +303,6 @@ public class GameEngine {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
-						this.combo++;
 						delete(toDelete);
 						this.score+=toDelete.size();
 						SoundEngine.KICK.play();
@@ -319,7 +313,6 @@ public class GameEngine {
 				}
 			}
 		}
-		this.combo = 0;
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				hasBeenChecked[i][j] = false;

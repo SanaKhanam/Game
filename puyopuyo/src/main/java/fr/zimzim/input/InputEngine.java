@@ -8,43 +8,70 @@ import fr.zimzim.model.GameEngine;
 import fr.zimzim.sound.SoundEngine;
 
 /**
- * This class handle all player's actions
+ * This class handles all player's actions
  * @author Simon Jambu
  *
  */
 public class InputEngine implements KeyListener{
-
+	
+	/**
+	 * Game engine instance
+	 */
 	private GameEngine engine;
+	
+	/**
+	 * Boolean used for calling pause() or resume() method
+	 * @see IGame#pause()
+	 * @see IGame#resume()
+	 */
+	private boolean pause;
+	
+	/**
+	 * Game instance
+	 */
 	private IGame game;
-
+	
+	/**
+	 * Constructor
+	 * @param engine: Game engine (logic) instance
+	 * @param game: Game instance
+	 */
 	public InputEngine(GameEngine engine, IGame game) {
 		this.engine = engine;
 		this.game = game;
 	}
-
+	
+	/**
+	 * Automatically called when a key event occurs. Calls the method linked to a key
+	 */
 	@Override
 	public void keyPressed(KeyEvent input) {
-        switch(input.getKeyCode()) {
+		switch(input.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
-			engine.moveLeft();
+			if(!pause)engine.moveLeft();
 			break;
 		case KeyEvent.VK_RIGHT:
-			engine.moveRight();
-
+			if(!pause)engine.moveRight();
 			break;
 		case KeyEvent.VK_Q:
-			SoundEngine.FLIP.play();
-			engine.rotateLeft();
+			if(!pause) {
+				SoundEngine.FLIP.play();
+				engine.rotateLeft();
+			}
 			break;
 		case KeyEvent.VK_D:
-			SoundEngine.FLIP.play();
-			engine.rotateRight();
+			if(!pause) {
+				SoundEngine.FLIP.play();
+				engine.rotateRight();
+			}
 			break;
 		case KeyEvent.VK_ESCAPE:
-			game.pause();
+			pause = !pause;
+			if(pause) game.pause();
+			else game.resume();
 			break;
 		case KeyEvent.VK_SPACE:
-			engine.drop();
+			if(!pause) engine.drop();
 			break;
 		case KeyEvent.VK_M:
 			SoundEngine.AMBIANCE.mute();
@@ -58,16 +85,8 @@ public class InputEngine implements KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
+	public void keyReleased(KeyEvent arg0) {}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-
+	public void keyTyped(KeyEvent arg0) {}
 }
