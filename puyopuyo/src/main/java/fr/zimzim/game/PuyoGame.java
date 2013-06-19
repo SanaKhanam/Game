@@ -20,7 +20,7 @@ public class PuyoGame implements IGame, Runnable {
 	 * Difficulty range that represents the percentage of difficulty to add
 	 * @see PuyoGame#increaseDifficulty()
 	 */
-	private static int DIFFICULTY_RANGE = 10;
+	private static int DIFFICULTY_RANGE = 5;
 
 	/**
 	 * Thread waiting delay before adding new Puyos on the map
