@@ -36,14 +36,15 @@ public class Puyo implements GameItem{
 	}
 	
 	/**
-	 * @return line: Current line of this Puyo
+	 * Returns current puyo's line
+	 * @return line
 	 */
 	public int getLine() {
 		return line;
 	}
 	
 	/**
-	 * Sets the new line of this Puyo
+	 * Sets puyo's new line
 	 * @param x: the new line
 	 */
 	public void setLine(int x) {
@@ -51,14 +52,15 @@ public class Puyo implements GameItem{
 	}
 	
 	/**
-	 * @return col: the current column of this Puyo
+	 * Returns current puyo's column
+	 * @return col
 	 */
 	public int getColumn() {
 		return col;
 	}
 	
 	/**
-	 * Sets the new column of this Puyo
+	 * Sets new puyo's column
 	 * @param y: the new column
 	 */
 	public void setColumn(int y) {
@@ -66,14 +68,15 @@ public class Puyo implements GameItem{
 	}
 	
 	/**
-	 * @return type: the current type of this Puyo
+	 * Returns puyo's type
+	 * @return type
 	 */
 	public int getType() {
 		return type;
 	}
 	
 	/**
-	 * Sets the type of this Puyo
+	 * Sets puyo's type
 	 * @param type: the new type
 	 */
 	public void setType(int type) {

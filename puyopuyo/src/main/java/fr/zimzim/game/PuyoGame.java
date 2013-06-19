@@ -181,7 +181,7 @@ public class PuyoGame implements IGame, Runnable {
 	}
 
 	/**
-	 * Call the game-over frame and ask the player to replay
+	 * Calls the game-over window and asks the player to replay
 	 * @see MainFrame#endGame(int)
 	 */
 	public void gameOver() {

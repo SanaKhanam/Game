@@ -57,7 +57,7 @@ public class Case {
 	}
 	
 	/**
-	 * Assign a new state to this case
+	 * Assign a new state to the case
 	 * @param state: The new state
 	 */
 	public void setState(CaseState state) {
@@ -65,7 +65,7 @@ public class Case {
 	}
 	
 	/**
-	 * 
+	 * Returns the GameItem held by the case
 	 * @return item: The GameItem held
 	 */
 	public GameItem getItem() {
@@ -81,16 +81,16 @@ public class Case {
 	}
 	
 	/**
-	 * 
-	 * @return line: The current line of this case
+	 * Returns current case's line
+	 * @return line
 	 */
 	public int getLine() {
 		return this.line;
 	}
 	
 	/**
-	 * 
-	 * @return col: The current column of this case
+	 * Returns current case's column
+	 * @return col
 	 */
 	public int getColumn() {
 		return this.col;

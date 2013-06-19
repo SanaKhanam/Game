@@ -19,7 +19,7 @@ import fr.zimzim.render.ScoreRender;
 /**
  * 
  * @author Simon Jambu
- * The frame that holds all graphical components.
+ * The window that holds all graphical components.
  */
 
 public class MainFrame extends JFrame {
@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
 	private static final String NAME = "Puyo Game";
 	
 	/**
-	 * Frame constructor
+	 * Frame/Window constructor
 	 * @param render: 
 	 * @param itemDisplayer
 	 * @param scoreDisplayer
@@ -55,7 +55,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	/**
-	 * Displays a Dialog frame when the game is over.
+	 * Displays a Dialog window when the game is over.
 	 * @param score: High score
 	 * @return
 	 */

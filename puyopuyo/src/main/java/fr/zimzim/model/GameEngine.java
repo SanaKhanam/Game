@@ -141,7 +141,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * Moves active items one game map case right
+	 * Moves active items one case right
 	 */
 	public void moveRight() {
 		GameItem right = activeItems.get(0);
@@ -164,7 +164,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * Moves active items one game-map case left
+	 * Moves active items one case left
 	 */
 	public void moveLeft() {
 		GameItem left = activeItems.get(0);
@@ -297,11 +297,12 @@ public class GameEngine {
 	 */
 	public boolean checkMap() {
 		boolean delete = false;
+		// For each Case (not even explored), check for combos
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
-					// Get the combo
+					// Get the combo (list of linked MapCases)
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete);
 						this.score+=toDelete.size();
@@ -309,10 +310,10 @@ public class GameEngine {
 						delete = true;
 						refreshMap();
 						//checkMap();
-					} // If greater than defined combo size, delete them, increase player score and refresh game-map
+					} // If list size greater than defined combo size, delete them, increase player score and refresh game-map
 				}
 			}
-		}// For each puyo (not even explored), check for combos
+		}
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				hasBeenChecked[i][j] = false;
@@ -325,11 +326,13 @@ public class GameEngine {
 	 * Refresh game map when linked puyos are deleted
 	 */
 	private void refreshMap() {
+		//for each puyo from bottom to top...
 		for(int i=Settings.MAP_HEIGHT-1; i>0; i--) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				Case c = map.getCase(i, j);
 				if(c.getState() instanceof CaseBusy) {
 					int line = c.getLine();
+					//... drop while map cases are empty
 					while(line+1<Settings.MAP_HEIGHT && map.getCase(line+1, c.getColumn()).getState() instanceof CaseEmpty) {
 						line++;
 					}
@@ -342,8 +345,6 @@ public class GameEngine {
 				}
 			}
 		}
-		//For each puyo from bottom to top, replace them because some have been deleted
-
 	}
 
 	/**
@@ -360,12 +361,12 @@ public class GameEngine {
 
 	/**
 	 * Recursive method to get linked puyos
-	 * Starts from a busy case, gets his successors (neighbours of the same type), re-calls method with successors.
-	 * Builds a list during exploration. This list contains all linked puyos of same type.
-	 * The <code>hasBeenChecked</code> matrix is used to avoid already checked cases in the upper method.
+	 * Starts from a busy case, gets his successors (neighbours which hold same puyo), re-calls method with successors.
+	 * Builds a list during exploration. This list contains all linked map-cases that hold puyos of same type.
+	 * The <code>hasBeenChecked</code> matrix is used to avoid already-checked cases in the upper method.
 	 * @param c: the current (busy) case
 	 * @param toKick: the current cases to delete
-	 * @return
+	 * @return a list of linked cases
 	 */
 	private List<Case> getCaseToDelete(Case c, List<Case> toKick) {
 		List<Case> successors = getSuccessors(c, toKick);
@@ -386,7 +387,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * Build a list of same types puyos right around case c
+	 * Build a list of cases that hold same puyos right around case c
 	 * @param c: the current map case
 	 * @param l: possible successors
 	 * @return candidates: same types puyos right around case c
@@ -427,7 +428,8 @@ public class GameEngine {
 				activeItems.add(tmp.get(i));
 			}
 		}
-
+		
+		//Drop them while case state is empty
 		for(int j=0; j<activeItems.size(); j++) {
 			GameItem other = activeItems.get(j);
 			int line = other.getLine();
