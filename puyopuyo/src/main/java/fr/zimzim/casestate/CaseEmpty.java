@@ -13,7 +13,7 @@ public class CaseEmpty implements CaseState {
 	private static final CaseState instance = new CaseEmpty();
 	
 	/**
-	 * 
+	 * Returns static class instance
 	 * @return class instance
 	 */
 	public static CaseState getInstance() {

@@ -23,4 +23,6 @@ Possible key actions:
 
 Project build with Maven.
 All classes and methods are commented. Please see the JavaDoc.
-All arts (images & sounds) are created by myself
+All arts (images & sounds) are created by myself.
+Swing Lib is used for graphics but the game can be easily updated with a 2D game engine because of
+its generic architecture. 

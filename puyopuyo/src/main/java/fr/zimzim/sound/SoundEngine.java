@@ -15,7 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import fr.zimzim.util.Settings;
 
 /**
- * 
+ * The enum is used to play a sound related to a game specific event
  * @author Simon Jambu
  *
  */
@@ -30,11 +30,21 @@ public enum SoundEngine{
 	public static enum Volume {
 		MUTE, LOW, MEDIUM, HIGH
 	}
-
+	
+	/**
+	 * Sounds volume
+	 */
 	public static Volume volume = Volume.LOW;
-
+	
+	/**
+	 * Sound clip
+	 */
 	private Clip clip;
-
+	
+	/**
+	 * Constructore
+	 * @param sound
+	 */
 	SoundEngine(String sound){
 		try {
 			// Use URL (instead of File) to read from disk and JAR.
@@ -57,8 +67,10 @@ public enum SoundEngine{
 		}
 
 	}
-
-	// Play or Re-play the sound effect from the beginning, by rewinding.
+	
+	/**
+	 * Play the sound effect
+	 */
 	public void play() {
 		if (volume != Volume.MUTE) {
 			if (clip.isRunning())
@@ -67,18 +79,22 @@ public enum SoundEngine{
 			clip.start();     // Start playing
 		}
 	}
-
+	
+	/**
+	 * Stop current sound and mute volume
+	 */
 	public void mute() {
 		if (clip.isRunning()){
 			clip.stop();   // Stop the player if it is still running
 			volume = Volume.MUTE;
 		} else{
 			volume = Volume.LOW;
-			clip.start();
-			clip.loop(Clip.LOOP_CONTINUOUSLY);// Start playing
 		}
 	}
-
+	
+	/**
+	 * Called when game is paused
+	 */
 	public void pause() {
 		if (volume != Volume.MUTE) {
 			if (clip.isRunning()){
@@ -90,11 +106,16 @@ public enum SoundEngine{
 		}
 	}
 
-	// Optional static method to pre-load all the sound files.
+	/**
+	 * Preloads sounds
+	 */
 	public static void init() {
 		values(); // calls the constructor for all the elements
 	}
-
+	
+	/**
+	 * Sets a sound to loop infinitely
+	 */
 	public void setInfiniteLoop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 

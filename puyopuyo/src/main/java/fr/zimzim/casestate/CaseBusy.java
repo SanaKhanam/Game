@@ -17,7 +17,7 @@ public class CaseBusy implements CaseState {
 	private static final CaseState instance = new CaseBusy();
 	
 	/**
-	 * 
+	 * Returns static class instance
 	 * @return class instance
 	 */
 	public static CaseState getInstance() {
