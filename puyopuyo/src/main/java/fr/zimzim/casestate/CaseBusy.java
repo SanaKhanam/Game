@@ -1,3 +1,6 @@
+/**
+ * This package contains all classes to define and represent a game map-case state
+ */
 package fr.zimzim.casestate;
 
 /**

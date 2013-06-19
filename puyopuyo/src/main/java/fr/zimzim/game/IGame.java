@@ -1,3 +1,6 @@
+/**
+ * Contains the Game class.
+ */
 package fr.zimzim.game;
 
 /**

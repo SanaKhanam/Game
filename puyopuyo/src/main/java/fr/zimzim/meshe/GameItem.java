@@ -1,3 +1,6 @@
+/**
+ * Contains all elements manipulated in the game (items like puyos)
+ */
 package fr.zimzim.meshe;
 
 /**

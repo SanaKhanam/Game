@@ -1,3 +1,6 @@
+/**
+ * Contains key-events management (all inputs from the player)
+ */
 package fr.zimzim.input;
 
 import java.awt.event.KeyEvent;

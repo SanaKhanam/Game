@@ -1,3 +1,6 @@
+/**
+ * Contains the model of the game (all the game logic and needed data structures)
+ */
 package fr.zimzim.model;
 
 import fr.zimzim.casestate.CaseEmpty;

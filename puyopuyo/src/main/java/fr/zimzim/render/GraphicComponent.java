@@ -1,3 +1,6 @@
+/**
+ * Contains all graphical components, each one in charge of displaying a specific 'part' of the game
+ */
 package fr.zimzim.render;
 
 /**

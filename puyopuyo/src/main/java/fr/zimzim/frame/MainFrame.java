@@ -1,3 +1,6 @@
+/**
+ * Contains the game window.
+ */
 package fr.zimzim.frame;
 
 import java.awt.BorderLayout;

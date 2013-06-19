@@ -1,3 +1,6 @@
+/**
+ * Design pattern Observer
+ */
 package fr.zimzim.observer;
 
 import java.util.Observable;

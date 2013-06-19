@@ -1,3 +1,6 @@
+/**
+ * Contains useful informations and data structures
+ */
 package fr.zimzim.util;
 
 /**

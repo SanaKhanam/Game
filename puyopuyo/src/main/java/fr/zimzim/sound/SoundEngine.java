@@ -1,3 +1,6 @@
+/**
+ * Sound events management
+ */
 package fr.zimzim.sound;
 
 import java.io.IOException;
@@ -11,6 +14,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import fr.zimzim.util.Settings;
 
+/**
+ * 
+ * @author Simon Jambu
+ *
+ */
 public enum SoundEngine{
 	AMBIANCE(Settings.AMBIANCE_URL),
 	FLIP(Settings.FLIP_URL),

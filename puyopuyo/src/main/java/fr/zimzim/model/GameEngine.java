@@ -1,6 +1,5 @@
 package fr.zimzim.model;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -359,7 +358,10 @@ public class GameEngine {
 
 	/**
 	 * Recursive method to get linked puyos
-	 * @param c: the current puyo's case
+	 * Starts from a busy case, gets his successors (neighbours of the same type), re-calls method with successors.
+	 * Builds a list during exploration. This list contains all linked puyos of same type.
+	 * The <code>hasBeenChecked</code> matrix is used to avoid already checked cases in the upper method.
+	 * @param c: the current (busy) case
 	 * @param toKick: the current cases to delete
 	 * @return
 	 */
@@ -439,13 +441,6 @@ public class GameEngine {
 		}
 	}
 
-	/**
-	 * 
-	 * @return Game map dimension
-	 */
-	public Dimension getMapDimension() {
-		return new Dimension(Settings.MAP_WIDTH,Settings.MAP_HEIGHT);
-	}
 
 	/**
 	 * Returns the map case in [i][j] 
@@ -458,16 +453,16 @@ public class GameEngine {
 	}
 
 	/**
-	 * 
-	 * @return current active game items
+	 * Returns current-active-game-items
+	 * @return activeItems
 	 */
 	public List<GameItem> getActiveItems(){
 		return this.activeItems;
 	}
 
 	/**
-	 * 
-	 * @return current next active game items
+	 * Returns current next-active-game-items
+	 * @return  nextActiveItem
 	 */
 	public List<GameItem> getNextItems(){
 		return this.nextActiveItem;
@@ -482,16 +477,16 @@ public class GameEngine {
 	}
 
 	/**
-	 * 
-	 * @return current player score
+	 * Returns player's current score
+	 * @return score
 	 */
 	public int getScore() {
 		return this.score;
 	}
 
 	/**
-	 * 
-	 * @return the game map
+	 * Returns the game map
+	 * @return map
 	 */
 	public Map getMap() {
 		return this.map;

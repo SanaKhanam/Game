@@ -1,3 +1,6 @@
+/**
+ * Contains the game launcher
+ */
 package fr.zimzim.main;
 
 import fr.zimzim.game.IGame;
