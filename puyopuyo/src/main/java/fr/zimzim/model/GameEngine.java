@@ -14,7 +14,7 @@ import fr.zimzim.sound.SoundEngine;
 import fr.zimzim.util.Settings;
 
 /**
- * The GameEngine class defines all logical operations
+ * The GameEngine class implements all logical operations
  * @author Simon Jambu
  *
  */
