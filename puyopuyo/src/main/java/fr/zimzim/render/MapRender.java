@@ -70,7 +70,7 @@ public class MapRender extends JComponent implements GraphicComponent{
 				null);
 		for(int i=0; i<Settings.MAP_HEIGHT; i++){
 			for(int j=0; j<Settings.MAP_WIDTH; j++){
-				if(gameEngine.getCase(i,j).getState() instanceof CaseBusy)
+				if(gameEngine.getCase(i,j).getState() instanceof CaseBusy && gameEngine.getCase(i,j).getItem() !=null)
 					g.drawImage(this.images[gameEngine.getCase(i,j).getItem().getType()],
 							(j*Settings.TAILLE_PIXELS)+Settings.LEFT_RIM_CADRE,
 							(i*Settings.TAILLE_PIXELS)+Settings.TOP_RIM_CADRE,
