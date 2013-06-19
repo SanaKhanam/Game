@@ -25,11 +25,11 @@ Project build with Maven.
 All classes and methods are commented. Please see the JavaDoc.
 All arts (images & sounds) are created by myself.
 Swing Lib is used for graphics but the game can be easily updated with a 2D game engine because of
-its generic architecture. 
+its generic architecture (please see UML class diagram). 
 
-I assume that my way to design this game is following the "modularity" philosophy.
+I assume that my way to design this game was following the "modularity" philosophy.
 Consequently, all key tasks of the game have been separated in different modules
-to make the game the most generic (MVC pattern here).
+to make the game the most generic (MVC pattern for example here).
 If design philosophy was "optimization" it is easy to merge some modules and use
 simpler data structures like an int matrix to represent game map (for example).
 
