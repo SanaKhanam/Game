@@ -73,8 +73,7 @@ public enum SoundEngine{
 	 */
 	public void play() {
 		if (volume != Volume.MUTE) {
-			if (clip.isRunning())
-				clip.stop();   // Stop the player if it is still running
+			if (clip.isRunning()) clip.stop();   // Stop the player if it is still running
 			clip.setFramePosition(0); // rewind to the beginning
 			clip.start();     // Start playing
 		}
@@ -118,9 +117,5 @@ public enum SoundEngine{
 	 */
 	public void setInfiniteLoop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
-
 	}
-
-
-
 }
