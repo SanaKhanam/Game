@@ -50,7 +50,7 @@ public class MapRender extends JComponent implements GraphicComponent{
 		this.setPreferredSize(new Dimension((Settings.TAILLE_PIXELS*Settings.MAP_WIDTH)+(Settings.LEFT_RIM_CADRE*2),
 				(Settings.TAILLE_PIXELS*Settings.MAP_HEIGHT)+(Settings.TOP_RIM_CADRE*2)));
 		this.cadre = getToolkit().getImage(this.getClass().getResource(Settings.IMG_CADRE));
-		this.images = new Image[4];
+		this.images = new Image[Settings.NB_PUYOS_TYPES];
         this.images[Settings.PUYO_GREEN] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_GREEN));
         this.images[Settings.PUYO_YELLOW] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_YELLOW));
         this.images[Settings.PUYO_RED] = getToolkit().getImage(this.getClass().getResource(Settings.IMG_PUYO_RED));

@@ -82,7 +82,7 @@ public class GameEngine {
 		this.score = 0;
 		this.map.clear();
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
+			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(Settings.NB_PUYOS_TYPES));
 			nextActiveItem.add(item);
 		}
 		observable.setChanged();
@@ -98,11 +98,11 @@ public class GameEngine {
 		nextActiveItem.clear();
 		for(int i=0; i<Settings.MAP_WIDTH; i++) {
 			if(map.getCase(0, i).getState() instanceof CaseBusy) return false;
-		}
+		} //Game over
 		for(int i = 0; i<Settings.NB_FALLING_PUYOS; i++) {
-			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(4));
+			GameItem item = new Puyo(-1,i+2,randomGenerator.nextInt(Settings.NB_PUYOS_TYPES));
 			nextActiveItem.add(item);
-		}
+		} //New puyos appear on middle top of game-map
 		observable.setChanged();
 		observable.notifyObservers(this);
 		return true;
@@ -121,12 +121,12 @@ public class GameEngine {
 				hit = true;
 				tmp = item;
 				activeItems.remove(item);
-			}
+			} // If one of active puyos hit another, drop the other....
 		}
 		if(!hit) {
 			for(int i=0; i<activeItems.size(); i++) {
 				activeItems.get(i).setLine(activeItems.get(i).getLine()+1);
-			}
+			}//...else drop them one step
 		}
 		else {
 			map.getCase(tmp.getLine(), tmp.getColumn()).setState(CaseBusy.getInstance());
@@ -134,6 +134,7 @@ public class GameEngine {
 			drop();
 			activeItems.clear();
 		}
+		//Notify observers that game-state changed
 		observable.setChanged();
 		observable.notifyObservers(this);
 		return hit;
@@ -147,7 +148,7 @@ public class GameEngine {
 		for(int i=1; i<activeItems.size(); i++) {
 			GameItem item = activeItems.get(i);
 			if(item.getColumn() > right.getColumn()) right = item;
-		}
+		}// Get the more on the right
 		if(right.getLine() != -1 && right.getColumn()+1<Settings.MAP_WIDTH){
 			Case adjacent = map.getCase(right.getLine(), right.getColumn()+1);
 			if(adjacent.getState() instanceof CaseEmpty) {
@@ -157,7 +158,7 @@ public class GameEngine {
 				}
 				observable.setChanged();
 				observable.notifyObservers(this);
-			}
+			}// If there's not any item one step right, move them and notify observers
 		}
 
 	}
@@ -170,7 +171,7 @@ public class GameEngine {
 		for(int i=1; i<activeItems.size(); i++) {
 			GameItem item = activeItems.get(i);
 			if(item.getColumn() < left.getColumn()) left = item;
-		}
+		}// Get the more on the left
 		if(left.getLine() != -1 && left.getColumn()>0) {
 			Case adjacent = map.getCase(left.getLine(), left.getColumn()-1);
 			if(adjacent.getState() instanceof CaseEmpty) {
@@ -180,7 +181,7 @@ public class GameEngine {
 				}
 				observable.setChanged();
 				observable.notifyObservers(this);
-			}
+			}// If there's not any item one step left, move them and notify observers
 		}
 
 	}
@@ -193,7 +194,6 @@ public class GameEngine {
 			GameItem item = activeItems.get(activeItems.size()-1);
 			GameItem axe = activeItems.get(0);
 			if(axe.getLine() != -1) {
-
 				// xy
 				//y
 				//x
@@ -301,6 +301,7 @@ public class GameEngine {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				if(map.getCase(i, j).getState() instanceof CaseBusy && !hasBeenChecked[i][j]) {
 					List<Case> toDelete = getCaseToDelete(map.getCase(i, j), new ArrayList<Case>());
+					// Get the combo
 					if(toDelete.size() >= Settings.COMBO_SIZE) {
 						delete(toDelete);
 						this.score+=toDelete.size();
@@ -308,10 +309,10 @@ public class GameEngine {
 						delete = true;
 						refreshMap();
 						//checkMap();
-					}
+					} // If greater than defined combo size, delete them, increase player score and refresh game-map
 				}
 			}
-		}
+		}// For each puyo (not even explored), check for combos
 		for(int i=0; i<Settings.MAP_HEIGHT; i++) {
 			for(int j=0; j<Settings.MAP_WIDTH; j++) {
 				hasBeenChecked[i][j] = false;
@@ -341,6 +342,7 @@ public class GameEngine {
 				}
 			}
 		}
+		//For each puyo from bottom to top, replace them because some have been deleted
 
 	}
 
@@ -370,7 +372,7 @@ public class GameEngine {
 		if(!toKick.contains(c)) toKick.add(c);
 		if(successors.size() == 0) {
 			return toKick;
-		}
+		} // If there's no more puyos linked, return the list
 		else{
 			for(int i =0; i<successors.size(); i++) {
 				Case succ = successors.get(i);
@@ -378,7 +380,7 @@ public class GameEngine {
 					hasBeenChecked[succ.getLine()][succ.getColumn()] = true;
 					getCaseToDelete(succ, toKick);
 				}
-			}
+			} // else for each successor, proceed to a check
 		}
 		return toKick;
 	}
@@ -405,7 +407,7 @@ public class GameEngine {
 			if(!l.contains(current)
 					&& current.getState() instanceof CaseBusy
 					&& current.getItem().getType() == c.getItem().getType()) candidates.add(current);
-		}
+		} // If there are puyos of same types around case c, return them in a list
 		return candidates;
 	}
 

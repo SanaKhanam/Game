@@ -22,6 +22,11 @@ public class Settings {
 	 * Green puyo type
 	 */
 	public static final int PUYO_GREEN = 0;
+	
+	/**
+	 * Number of types of puyos
+	 */
+	public static final int NB_PUYOS_TYPES = 4;
 	/**
 	 * Yellow puyo type
 	 */

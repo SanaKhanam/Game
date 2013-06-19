@@ -45,7 +45,7 @@ public class InputEngine implements KeyListener{
 	}
 	
 	/**
-	 * Automatically called when a key event occurs. Calls the method linked to a key
+	 * Automatically called when a key event occurs. Calls the method linked to a key if the game is not paused
 	 */
 	@Override
 	public void keyPressed(KeyEvent input) {
