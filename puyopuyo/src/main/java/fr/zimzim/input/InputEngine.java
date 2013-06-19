@@ -56,7 +56,7 @@ public class InputEngine implements KeyListener{
 		case KeyEvent.VK_RIGHT:
 			if(!pause)engine.moveRight();
 			break;
-		case KeyEvent.VK_Q:
+		case KeyEvent.VK_A:
 			if(!pause) {
 				SoundEngine.FLIP.play();
 				engine.rotateLeft();

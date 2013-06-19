@@ -10,7 +10,7 @@ The goal of this game is to link puyos of the same color to increase your score 
 Possible key actions:
 	-Left arrow: left shift
 	-Right arrow: right shift
-	-Q: left rotation
+	-A: left rotation
 	-D: right rotation
 	-Space bar: drop current puyos.
 	-M: mute sound.
