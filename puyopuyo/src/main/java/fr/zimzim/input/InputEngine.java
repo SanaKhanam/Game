@@ -23,7 +23,7 @@ public class InputEngine implements KeyListener{
 	private GameEngine engine;
 	
 	/**
-	 * Boolean used for calling pause() or resume() method
+	 * Boolean used to call pause() or resume() method and avoid user actions while game is paused
 	 * @see IGame#pause()
 	 * @see IGame#resume()
 	 */
