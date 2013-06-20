@@ -75,6 +75,7 @@ public class PuyoGame implements IGame, Runnable {
 		this.input = new InputEngine(this.engine, this);	
 		this.graphicEngine = new GraphicEngine(this.engine);
 		this.engine.addObserver(this.graphicEngine);
+		this.engine.addObserver(this.input);
 		this.frame = new MainFrame(this.graphicEngine);
 		this.delay = Settings.INITIAL_DELAY;
 

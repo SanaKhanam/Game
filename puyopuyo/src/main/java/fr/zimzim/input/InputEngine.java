@@ -5,6 +5,8 @@ package fr.zimzim.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import fr.zimzim.game.IGame;
 import fr.zimzim.model.GameEngine;
@@ -15,7 +17,7 @@ import fr.zimzim.sound.SoundEngine;
  * @author Simon Jambu
  *
  */
-public class InputEngine implements KeyListener{
+public class InputEngine implements KeyListener, Observer{
 	
 	/**
 	 * Game engine instance
@@ -34,6 +36,8 @@ public class InputEngine implements KeyListener{
 	 */
 	private IGame game;
 	
+	private boolean lock;
+	
 	/**
 	 * Constructor
 	 * @param engine: Game engine (logic) instance
@@ -51,10 +55,16 @@ public class InputEngine implements KeyListener{
 	public void keyPressed(KeyEvent input) {
 		switch(input.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
-			if(!pause)engine.moveLeft();
+			if(!pause && !lock){
+				this.lock = true;
+				engine.moveLeft();
+			}
 			break;
 		case KeyEvent.VK_RIGHT:
-			if(!pause)engine.moveRight();
+			if(!pause && !lock){
+				this.lock = true;
+				engine.moveRight();
+			}
 			break;
 		case KeyEvent.VK_A:
 			if(!pause) {
@@ -63,7 +73,8 @@ public class InputEngine implements KeyListener{
 			}
 			break;
 		case KeyEvent.VK_D:
-			if(!pause) {
+			if(!pause && !lock) {
+				this.lock = true;
 				SoundEngine.FLIP.play();
 				engine.rotateRight();
 			}
@@ -74,7 +85,10 @@ public class InputEngine implements KeyListener{
 			else game.resume();
 			break;
 		case KeyEvent.VK_SPACE:
-			if(!pause) engine.drop();
+			if(!pause && !lock){
+				this.lock = true;
+				engine.drop();
+			}
 			break;
 		case KeyEvent.VK_M:
 			SoundEngine.AMBIANCE.mute();
@@ -92,4 +106,9 @@ public class InputEngine implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		this.lock = false;
+	}
 }
