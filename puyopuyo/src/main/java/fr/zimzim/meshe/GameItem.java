@@ -10,11 +10,40 @@ package fr.zimzim.meshe;
  */
 public interface GameItem {
 	
+	/**
+	 * Returns current item's line
+	 * @return
+	 */
 	public int getLine();
+	
+	/**
+	 * Sets item's new line
+	 * @param line
+	 */
 	public void setLine(int line);
+	
+	/**
+	 * Returns current item's column
+	 * @return
+	 */
 	public int getColumn();
+	
+	/**
+	 * Sets item's new column
+	 * @param column
+	 */
 	public void setColumn(int column);
+	
+	/**
+	 * Returns current item's type
+	 * @return
+	 */
 	public int getType();
+	
+	/**
+	 * Sets item's type
+	 * @param type
+	 */
 	public void setType(int type);
 
 }

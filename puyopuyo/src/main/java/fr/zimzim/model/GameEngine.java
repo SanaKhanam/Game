@@ -40,13 +40,13 @@ public class GameEngine {
 	private List<GameItem> activeItems;
 
 	/**
-	 * Holds the next active game items. Displayed on the screen for player
+	 * Holds the next active game items. Displayed on the screen for player information
 	 * @see ItemRender
 	 */
 	private List<GameItem> nextActiveItem;
 
 	/**
-	 * Used for generating new items randomly
+	 * Used to generate new items randomly
 	 * @see GameEngine#addActiveItems()
 	 */
 	private Random randomGenerator;
@@ -158,7 +158,7 @@ public class GameEngine {
 				}
 				observable.setChanged();
 				observable.notifyObservers(this);
-			}// If there's not any item one step right, move them and notify observers
+			}// If there's not any item one step right, move them and notify observers (for screen display)
 		}
 
 	}
@@ -181,7 +181,7 @@ public class GameEngine {
 				}
 				observable.setChanged();
 				observable.notifyObservers(this);
-			}// If there's not any item one step left, move them and notify observers
+			}// If there's not any item one step left, move them and notify observers (for screen display)
 		}
 
 	}
@@ -293,7 +293,7 @@ public class GameEngine {
 
 	/**
 	 * Checks for puyos combos
-	 * @return true if at least one combo found
+	 * @return true if at least one combo is found
 	 */
 	public boolean checkMap() {
 		boolean delete = false;
@@ -495,7 +495,4 @@ public class GameEngine {
 	public Map getMap() {
 		return this.map;
 	}
-
-
-
 }
