@@ -11,6 +11,7 @@ import java.util.Observer;
 import fr.zimzim.game.IGame;
 import fr.zimzim.model.GameEngine;
 import fr.zimzim.sound.SoundEngine;
+import fr.zimzim.util.Settings;
 
 /**
  * This class handles all player's actions
@@ -36,6 +37,9 @@ public class InputEngine implements KeyListener, Observer{
 	 */
 	private IGame game;
 	
+	/**
+	 * Input locker
+	 */
 	private boolean lock;
 	
 	/**
@@ -91,9 +95,7 @@ public class InputEngine implements KeyListener, Observer{
 			}
 			break;
 		case KeyEvent.VK_M:
-			SoundEngine.AMBIANCE.mute();
-			break;
-		case KeyEvent.VK_8:
+			SoundEngine.AMBIANCE.mute(Settings.AMBIANCE_URL);
 			break;
 		default:
 			break;

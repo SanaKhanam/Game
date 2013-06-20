@@ -42,7 +42,7 @@ public enum SoundEngine{
 	private Clip clip;
 	
 	/**
-	 * Constructore
+	 * Constructor
 	 * @param sound
 	 */
 	SoundEngine(String sound){
@@ -81,13 +81,17 @@ public enum SoundEngine{
 	
 	/**
 	 * Stop current sound and mute volume
+	 * @param ambianceUrl 
 	 */
-	public void mute() {
+	public void mute(String ambianceUrl) {
 		if (clip.isRunning()){
 			clip.stop();   // Stop the player if it is still running
 			volume = Volume.MUTE;
 		} else{
 			volume = Volume.LOW;
+			clip.start();
+			if(ambianceUrl.equals(Settings.AMBIANCE_URL))
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 	}
 	
@@ -100,7 +104,7 @@ public enum SoundEngine{
 				clip.stop();   // Stop the player if it is still running
 			} else{
 				clip.start();
-				clip.loop(Clip.LOOP_CONTINUOUSLY);// Start playing
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
 			}
 		}
 	}
@@ -116,6 +120,6 @@ public enum SoundEngine{
 	 * Sets a sound to loop infinitely
 	 */
 	public void setInfiniteLoop() {
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		if (volume != Volume.MUTE) clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 }

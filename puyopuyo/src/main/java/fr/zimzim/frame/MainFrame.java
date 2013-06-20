@@ -62,8 +62,8 @@ public class MainFrame extends JFrame {
 	public boolean endGame(int score) {
 		int n = JOptionPane.showConfirmDialog(
 			    this,
-			    "Your score: "+score+"\n Want to play again ?",
-			    "Finish !",
+			    "Your score: "+score+"\nWant to play again ?",
+			    "Game Over !",
 			    JOptionPane.YES_NO_OPTION);
 		if(n == JOptionPane.YES_OPTION) return true;
 		else return false;
