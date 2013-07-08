@@ -12,7 +12,7 @@ Possible key actions:
 	-Right arrow: right shift
 	-A: left rotation
 	-D: right rotation
-	-Space bar: drop current puyos
+	-Space bar: drop active puyos
 	-M: mute sound
 	-Escape: pause the game
 	
@@ -24,12 +24,12 @@ Possible key actions:
 Project built with Maven.
 All classes and methods are commented. Please see the JavaDoc.
 All arts (images & sounds) are created by myself.
-Swing Lib is used for graphics but the game can be easily updated with a 2D game engine because of
+Swing Lib is used for graphics but the game can be easily updated with a 2D game engine due to
 its generic architecture (please see UML class diagram). 
 
-I assume that my way to design this game was following the "modularity" philosophy.
+The way I designed this game was following the "modularity" philosophy.
 Consequently, all key-tasks of the game (logic, display, inputs ...) have been separated in different modules
 to make the game as generic as possible (MVC pattern for example here).
 If design philosophy was "optimization" it is easy to merge some modules and use
-simpler data structures like an int matrix to represent game map (for example).
+simpler data structures.
 
